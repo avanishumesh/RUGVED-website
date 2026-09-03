@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/site-shell";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // app/layout.tsx
 import { JetBrains_Mono } from "next/font/google";
@@ -28,9 +29,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${jbm.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#070a07]">
-        <SiteShell>{children}</SiteShell>
+      <body className="min-h-full flex flex-col bg-transparent">
+        <ThemeProvider>
+          <SiteShell>{children}</SiteShell>
+        </ThemeProvider>
       </body>
     </html>
   );

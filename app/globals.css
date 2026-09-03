@@ -122,12 +122,137 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: transparent;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
+  ::selection {
+    background: rgba(139, 143, 107, 0.35);
+    color: #ffffff;
+  }
+
+  /* Custom tactical scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070a07;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(194, 184, 163, 0.2);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(194, 184, 163, 0.4);
+  }
+
+  /* Light mode overrides — military sand theme */
+  html.light {
+    color-scheme: light;
+  }
+  html.light body {
+    background: transparent !important;
+    color: #1a1d14 !important;
+  }
+  html.light ::-webkit-scrollbar-track {
+    background: #f7f5ee;
+  }
+  html.light ::-webkit-scrollbar-thumb {
+    background: rgba(87, 90, 51, 0.25);
+  }
+  html.light .bg-\[\#070a07\] { background-color: #f7f5ee !important; }
+  html.light .bg-\[\#070a07\]\/70 { background-color: rgba(255,255,255,0.78) !important; }
+  html.light .bg-\[\#070a07\]\/75 { background-color: rgba(255,255,255,0.82) !important; }
+  html.light .bg-\[\#070a07\]\/85 { background-color: rgba(255,255,255,0.92) !important; }
+  html.light .bg-\[\#0f120f\]\/70 { background-color: rgba(255,255,255,0.88) !important; }
+  html.light .bg-\[\#0f120f\]\/60 { background-color: rgba(250,248,243,0.92) !important; }
+  html.light .bg-\[\#111410\]\/70 { background-color: rgba(255,255,255,0.88) !important; }
+  html.light .bg-\[\#111410\] { background-color: #ffffff !important; }
+  html.light .bg-\[\#080a07\] { background-color: #faf8f3 !important; }
+  html.light .bg-\[\#080a07\]\/60 { background-color: rgba(250,248,243,0.9) !important; }
+  html.light .bg-\[\#0f120f\] { background-color: #ffffff !important; }
+  html.light .bg-black\/30 { background-color: rgba(255,255,255,0.62) !important; }
+  html.light .bg-black\/20 { background-color: rgba(255,255,255,0.5) !important; }
+  html.light .bg-black\/40 { background-color: rgba(255,255,255,0.72) !important; }
+  html.light .bg-black\/50 { background-color: rgba(255,255,255,0.76) !important; }
+  html.light .text-\[\#e8e6dc\] { color: #1a1d14 !important; }
+  html.light .text-\[\#f2efe6\] { color: #1a1d14 !important; }
+  html.light .text-\[\#c2b8a3\] { color: #575a33 !important; }
+  html.light .text-\[\#8b8f6b\] { color: #6b6e4a !important; }
+  html.light .text-\[\#111410\] { color: #f7f5ee !important; }
+  html.light .border-\[\#c2b8a3\]\/10 { border-color: rgba(120,110,90,0.15) !important; }
+  html.light .border-\[\#c2b8a3\]\/15 { border-color: rgba(120,110,90,0.2) !important; }
+  html.light .border-\[\#c2b8a3\]\/20 { border-color: rgba(120,110,90,0.25) !important; }
+  html.light .border-\[\#c2b8a3\]\/30 { border-color: rgba(120,110,90,0.3) !important; }
+  html.light .border-\[\#8b8f6b\]\/20 { border-color: rgba(107,110,74,0.22) !important; }
+  html.light .border-\[\#8b8f6b\]\/10 { border-color: rgba(107,110,74,0.14) !important; }
+  html.light .bg-\[\#c2b8a3\] { background-color: #575a33 !important; }
+  html.light .bg-\[\#c2b8a3\]\/10 { background-color: rgba(87,90,51,0.08) !important; }
+  html.light .bg-\[\#8b8f6b\]\/10 { background-color: rgba(87,90,51,0.09) !important; }
+  html.light .from-black\/40 { --tw-gradient-from: rgba(255,255,255,0.08) !important; }
+  html.light ::selection { background: rgba(87,90,51,0.22) !important; }
 }
+
+/* Tactical & Awwwards glow animation keyframes */
+@keyframes laser-sweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+
+@keyframes radar-ping {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.animate-laser-sweep {
+  animation: laser-sweep 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-radar-ping {
+  animation: radar-ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Glass & tactical border utilities */
+.tactical-glass {
+  background: rgba(15, 18, 15, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(194, 184, 163, 0.12);
+}
+
+.tactical-glass-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tactical-glass-hover:hover {
+  border-color: rgba(194, 184, 163, 0.28);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(139, 143, 107, 0.15);
+}
+
+/* Fine Grid Pattern */
+.tactical-grid-bg {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(194, 184, 163, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(194, 184, 163, 0.04) 1px, transparent 1px);
+}
+
 @theme inline {
   --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
   var(--delay, 0ms);
