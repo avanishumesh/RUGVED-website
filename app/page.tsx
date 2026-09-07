@@ -153,43 +153,76 @@ export default function Home() {
     terminalRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  return (
+   return (
     <main className="mx-auto max-w-[1440px] px-6 pt-6 md:px-8 md:pt-8 space-y-20 md:space-y-28">
-      {/* ── TOP HUD TELEMETRY BAR ── */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/[0.12] bg-white/[0.05] px-5 py-3 font-mono text-[10px] tracking-[0.2em] text-[#8b8f6b] backdrop-blur-xl shadow-lg">
-        <div className="flex items-center gap-2">
-          <IconCrosshair className="h-4 w-4 text-emerald-400" />
-
-          <span className="text-[#e8e6dc] font-bold">
-            MISSION PROFILE : DEFENCE ROBOTICS
-          </span>
-
-          <span className="hidden sm:inline text-[#8b8f6b]">
-            | SECTOR // AUTONOMOUS GROUND SYSTEMS
-          </span>
-        </div>
-
-        <div className="hidden md:flex items-center gap-4">
-          <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span className="text-emerald-400 font-bold">
-              RADAR SWEEP ACTIVE
+      
+      {/* Outer wrapper to perfectly split the HUD bar and Title across full visible height */}
+      <div className="flex h-[calc(100vh-2rem)] w-full flex-col overflow-hidden">
+        
+        {/* ── TOP HUD TELEMETRY BAR ── */}
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/[0.12] bg-white/[0.05] px-5 py-3 font-mono text-[10px] tracking-[0.2em] text-[#8b8f6b] backdrop-blur-xl shadow-lg shrink-0">
+          <div className="flex items-center gap-2">
+            <IconCrosshair className="h-4 w-4 text-emerald-400" />
+            <span className="text-[#e8e6dc] font-bold">
+              MISSION PROFILE : DEFENCE ROBOTICS
             </span>
-          </span>
+            <span className="hidden sm:inline text-[#8b8f6b]">
+              | SECTOR // AUTONOMOUS GROUND SYSTEMS
+            </span>
+          </div>
 
-          <span className="text-[#c2b8a3]/60">•</span>
+          <div className="hidden md:flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-emerald-400 font-bold">
+                RADAR SWEEP ACTIVE
+              </span>
+            </span>
+            <span className="text-[#c2b8a3]/60">•</span>
+            <span>CLASSIFICATION // UNCLASSIFIED</span>
+          </div>
 
-          <span>CLASSIFICATION // UNCLASSIFIED</span>
+          <div className="flex items-center gap-2 text-[#c2b8a3]">
+            <IconRadar className="h-4 w-4 text-emerald-400" />
+            <span>FREQ: 5.8 GHz LINK</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 text-[#c2b8a3]">
-          <IconRadar className="h-4 w-4 text-emerald-400" />
-          <span>FREQ: 5.8 GHz LINK</span>
+        {/* ── TITLED HERO CONTAINER (Occupies exactly 100% of remaining height below HUD) ── */}
+        <div className="flex flex-1 items-center -translate-y-[12vh]">
+          <WarpText
+            text="RUGVED"
+            color={isLight ? "#1a1d14" : "#f2efe6"}
+            warpStrength={0.055}
+            warpScale={1.35}
+            speed={0.4}
+            pointerInfluence={0.42}
+            pointerStrength={0.35}
+            refraction={0.012}
+            ripple
+            fontSize={168}
+            fontWeight={900}
+            letterSpacing={-0.07}
+            lineHeight={0.82}
+          />
         </div>
+
       </div>
 
       {/* ── HERO SECTION ── */}
-      <div className="grid gap-8 lg:grid-cols-[1.35fr_0.85fr] lg:gap-8 items-stretch">
+
+
+      {/* ── HERO SECTION ── */}
+
+      <motion.section
+        ref={schematicRef}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="space-y-6"
+      >
+      <div className="grid gap-8 lg:grid-cols-[1.35fr_0.85fr] lg:gap-8 items-stretch -translate-y-[7vh]">
         {/* Left Hero Main Card */}
         <TacticalCard
           laserSweep
@@ -227,23 +260,9 @@ export default function Home() {
                 }}
               />
 
-              <div className="relative">
-                <WarpText
-                  text="RUGVED"
-                  color={isLight ? "#1a1d14" : "#f2efe6"}
-                  warpStrength={0.055}
-                  warpScale={1.35}
-                  speed={0.4}
-                  pointerInfluence={0.42}
-                  pointerStrength={0.35}
-                  refraction={0.012}
-                  ripple
-                  fontSize={168}
-                  fontWeight={900}
-                  letterSpacing={-0.07}
-                  lineHeight={0.82}
-                />
-              </div>
+              
+                
+              
             </div>
 
             {/* Stencil Sub-headline */}
@@ -479,6 +498,7 @@ export default function Home() {
           </TacticalCard>
         </div>
       </div>
+      </motion.section>
 
       {/* ── SECTION 01: INTERACTIVE BLUEPRINT & SCHEMATIC ── */}
       <motion.section
