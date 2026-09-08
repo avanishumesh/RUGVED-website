@@ -163,7 +163,7 @@ export default function Home() {
         <div className="flex flex-1 items-center -translate-y-[12vh]">
           <WarpText
             text="RUGVED"
-            color={isLight ? "#1a1d14" : "#f2efe6"}
+            color={isLight ? "#d9c490" : "#9ea3c7"}
             warpStrength={0.055}
             warpScale={1.35}
             speed={0.4}

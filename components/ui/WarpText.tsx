@@ -258,7 +258,7 @@ const syncUniforms = (program: Program, props: RuntimeProps): void => {
 
 const WarpText = ({
   text = 'Bend the moment',
-  color = '#f8f5ff',
+  color = '#014f6e',
   warpStrength = 0.08,
   warpScale = 1.7,
   speed = 0.55,
@@ -268,7 +268,7 @@ const WarpText = ({
   ripple = true,
   fontSize = 'clamp(3rem, 10vw, 9rem)',
   fontWeight = 800,
-  fontFamily = 'inherit',
+  fontFamily = "var(--font-metamorphous)",
   letterSpacing = '-0.06em',
   lineHeight = 0.9,
   className = '',
