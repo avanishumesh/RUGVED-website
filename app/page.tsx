@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import SplitFlapText from "@/components/ui/SplitFlapText";
 import WarpText from "@/components/ui/WarpText";
 import TacticalCard from "@/components/ui/TacticalCard";
@@ -122,6 +122,18 @@ const RESEARCH_PAPERS = [
   },
 ];
 
+const EVENTS = [
+  { id: 1, year: "2023", type: "achievement", badge: "VISION", title: "Guiding Gaze — OpenCV AI", detail: "Global Rank 7" },
+  { id: 2, year: "2023", type: "paper", badge: "PATHFINDING", title: "Optimized Real-Time Pathfinding and Recovery in Extreme UGV Systems", detail: "IEEE Int'l Conf. on Robotics & Automation (ICRA)" },
+  { id: 3, year: "2023", type: "paper", badge: "DSP / FPGA", title: "FPGA-Accelerated Microsecond Acoustic Triangulation for Muzzle Flash Localization", detail: "Institutional Preprint — confirm publisher" },
+  { id: 4, year: "2023–24", type: "achievement", badge: "ROBOTICS", title: "e-Yantra — IIT Bombay", detail: "AIR 10" },
+  { id: 5, year: "2024", type: "achievement", badge: "NATIONAL", title: "Smart India Hackathon", detail: "Top 5 Finalist" },
+  { id: 6, year: "2024", type: "achievement", badge: "HARDWARE", title: "WALRUS 2.0 UGV Platform", detail: "Field Deployed" },
+  { id: 7, year: "2024", type: "achievement", badge: "IPR", title: "AI Terrain Navigation System", detail: "Patent Filed" },
+  { id: 8, year: "2024", type: "paper", badge: "AI / SLAM", title: "Autonomous Terrain Navigation Using Multi-Modal Sensor Fusion & Deep AI", detail: "IEEE Transactions on Field Robotics" },
+  { id: 9, year: "2025", type: "achievement", badge: "EXPO", title: "National Defence Expo", detail: "Official Feature" },
+];
+
 function SectionLabel({ k, label }: { k: string; label: string }) {
   return (
     <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.32em] text-[#8b8f6b]">
@@ -138,12 +150,115 @@ function SectionLabel({ k, label }: { k: string; label: string }) {
   );
 }
 
+function TimelineItem({
+  event,
+  index,
+  reduceMotion,
+}: {
+  event: (typeof EVENTS)[0];
+  index: number;
+  reduceMotion: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setVisible(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [reduceMotion]);
+
+  const Icon = event.type === "paper" ? IconFileText : IconTrophy;
+  const accent = event.type === "paper" ? "var(--signal)" : "var(--amber)";
+
+  return (
+    <div
+      ref={ref}
+      className={`tl-row ${visible ? "tl-visible" : ""}`}
+      style={{ transitionDelay: visible ? `${(index % 5) * 60}ms` : "0ms" }}
+    >
+      <span className="tl-node" style={{ ["--accent" as any]: accent }}>
+        <span className="tl-node-ring" />
+        <span className="tl-node-dot" />
+      </span>
+
+      <div className="tl-card">
+        <div className="tl-card-top">
+          <span className="tl-badge" style={{ color: accent, borderColor: accent }}>
+            {event.badge}
+          </span>
+          <span className="tl-year">{event.year}</span>
+        </div>
+
+        <div className="tl-title-row">
+          <Icon size={15} strokeWidth={2} style={{ color: accent, flexShrink: 0, marginTop: 2 }} />
+          <h3 className="tl-title">{event.title}</h3>
+        </div>
+
+        <p className="tl-detail" style={{ color: accent }}>
+          {event.detail}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { theme } = useTheme();
   const isLight = theme === "light";
 
   const schematicRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const [progress, setProgress] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const el = trackRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const total = rect.height + vh * 0.5;
+      const passed = vh * 0.75 - rect.top;
+      const pct = Math.min(100, Math.max(0, (passed / total) * 100));
+      setProgress(pct);
+    });
+  }, []);
+
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [handleScroll]);
 
   const scrollToSchematic = () => {
     schematicRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -179,9 +294,6 @@ export default function Home() {
         </div>
 
       </div>
-
-      {/* ── HERO SECTION ── */}
-
 
       {/* ── HERO SECTION ── */}
 
@@ -646,7 +758,7 @@ export default function Home() {
         <InteractiveTerminal />
       </motion.section>
 
-      {/* ── SECTION 04: ACHIEVEMENTS & RESEARCH PAPERS ── */}
+      {/* ── SECTION 04: ACHIEVEMENTS & RESEARCH PAPERS (INTEGRATED) ── */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -656,93 +768,201 @@ export default function Home() {
       >
         <SectionLabel k="04" label="MILESTONES & SCIENTIFIC ARCHIVE" />
 
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          {/* Milestones Grid */}
-          <TacticalCard className="p-7">
-            <div className="flex items-center justify-between border-b border-[#c2b8a3]/12 pb-4">
-              <div className="flex items-center gap-2 font-mono text-[13px] font-bold tracking-wider text-[#e8e6dc]">
-                <IconTrophy className="h-4 w-4 text-amber-400" />
-                DECORATIONS &amp; PODIUMS
+        <div className="tl-wrap rounded-xl border border-white/[0.10] shadow-lg" ref={trackRef}>
+          <style>{`
+            .tl-wrap {
+              --bg: rgba(7, 10, 8, 0.4); 
+              --panel: rgba(255,255,255,0.05);
+              --border: rgba(255,255,255,0.10);
+              --border-strong: rgba(255,255,255,0.22);
+              --ink: #e8e6dc;
+              --moss: #8b8f6b;
+              --signal: #34d399;
+              --amber: #fbbf24;
+              position: relative;
+              background: var(--bg);
+              backdrop-filter: blur(12px);
+              color: var(--ink);
+              font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+              padding: 40px 20px 56px;
+              overflow: hidden;
+            }
+            .tl-wrap::before {
+              content: "";
+              position: absolute;
+              top: -120px;
+              right: -80px;
+              width: 420px;
+              height: 420px;
+              background: radial-gradient(circle, rgba(52,211,153,0.08), transparent 70%);
+              pointer-events: none;
+            }
+
+            .tl-body {
+              position: relative;
+              max-width: 760px;
+              margin: 0 auto;
+              padding-left: 40px;
+            }
+            .tl-spine {
+              position: absolute;
+              left: 15px;
+              top: 6px;
+              bottom: 6px;
+              width: 2px;
+              background: var(--border);
+            }
+            .tl-spine-fill {
+              position: absolute;
+              left: 15px;
+              top: 6px;
+              width: 2px;
+              background: linear-gradient(180deg, var(--signal), var(--amber));
+              box-shadow: 0 0 10px rgba(52,211,153,0.5);
+              transition: height 80ms linear;
+            }
+            .tl-tracer {
+              position: absolute;
+              left: 15px;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              transform: translate(-50%, -50%);
+              transition: top 80ms linear;
+              pointer-events: none;
+              z-index: 10;
+            }
+            .tl-tracer svg {
+              color: var(--signal);
+              filter: drop-shadow(0 0 6px rgba(52,211,153,0.8));
+              animation: tl-spin 3s linear infinite;
+            }
+            .tl-tracer-label {
+              font-size: 9px;
+              letter-spacing: 0.1em;
+              color: var(--signal);
+              background: rgba(7,10,8,0.85);
+              border: 1px solid rgba(52,211,153,0.3);
+              border-radius: 4px;
+              padding: 2px 6px;
+              white-space: nowrap;
+            }
+            @keyframes tl-spin { to { transform: rotate(360deg); } }
+
+            .tl-list { display: flex; flex-direction: column; gap: 32px; }
+            .tl-row {
+              position: relative;
+              opacity: 0;
+              transform: translateX(-18px);
+              transition: opacity 500ms ease, transform 500ms ease;
+            }
+            .tl-row.tl-visible { opacity: 1; transform: translateX(0); }
+
+            .tl-node {
+              position: absolute;
+              left: -40px;
+              top: 18px;
+              width: 16px;
+              height: 16px;
+            }
+            .tl-node-ring {
+              position: absolute;
+              inset: 0;
+              border-radius: 50%;
+              border: 2px solid var(--border-strong);
+              background: var(--bg);
+              transition: border-color 400ms ease;
+            }
+            .tl-visible .tl-node-ring { border-color: var(--accent); }
+            .tl-node-dot {
+              position: absolute;
+              top: 50%; left: 50%;
+              width: 6px; height: 6px;
+              border-radius: 50%;
+              background: var(--accent);
+              transform: translate(-50%, -50%) scale(0);
+              transition: transform 400ms ease 150ms;
+              box-shadow: 0 0 8px var(--accent);
+            }
+            .tl-visible .tl-node-dot { transform: translate(-50%, -50%) scale(1); }
+
+            .tl-card {
+              border: 1px solid var(--border);
+              background: var(--panel);
+              backdrop-filter: blur(10px);
+              border-radius: 10px;
+              padding: 16px 18px;
+              transition: border-color 200ms ease, background 200ms ease;
+            }
+            .tl-card:hover { border-color: var(--border-strong); background: rgba(255,255,255,0.07); }
+
+            .tl-card-top {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 10px;
+              margin-bottom: 10px;
+            }
+            .tl-badge {
+              border: 1px solid;
+              border-radius: 4px;
+              padding: 2px 7px;
+              letter-spacing: 0.08em;
+              background: rgba(255,255,255,0.03);
+            }
+            .tl-year { color: var(--moss); letter-spacing: 0.06em; }
+
+            .tl-title-row { display: flex; gap: 8px; align-items: flex-start; }
+            .tl-title {
+              font-size: 13.5px;
+              font-weight: 700;
+              line-height: 1.4;
+              margin: 0;
+              color: var(--ink);
+            }
+            .tl-detail {
+              font-size: 12px;
+              font-weight: 600;
+              margin: 6px 0 0 23px;
+            }
+
+            .tl-footnote {
+              max-width: 760px;
+              margin: 40px auto 0;
+              padding-left: 40px;
+              font-size: 11px;
+              color: var(--moss);
+              line-height: 1.6;
+            }
+            .tl-footnote-accent { color: var(--signal); font-weight: 700; }
+
+            @media (prefers-reduced-motion: reduce) {
+              .tl-row { transition: none; }
+              .tl-node-ring, .tl-node-dot, .tl-spine-fill, .tl-tracer { transition: none; }
+              .tl-tracer svg { animation: none; }
+            }
+          `}</style>
+
+          <div className="tl-body">
+            <div className="tl-spine" />
+            <div className="tl-spine-fill" style={{ height: `${progress}%` }} />
+            {progress > 1 && progress < 99 && (
+              <div className="tl-tracer" style={{ top: `${progress}%` }}>
+                <IconRadar size={12} />
+                <span className="tl-tracer-label">TRACK {Math.round(progress)}%</span>
               </div>
+            )}
 
-              <span className="font-mono text-[10px] tracking-widest text-[#8b8f6b]">
-                UNCLASSIFIED
-              </span>
-            </div>
-
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ACHIEVEMENTS.slice(0, 6).map((a) => (
-                <div
-                  key={a.label}
-                  className="rounded-lg border border-white/[0.10] bg-white/[0.05] backdrop-blur-md p-3.5 transition-colors hover:border-white/[0.20] hover:bg-white/[0.07]"
-                >
-                  <div className="flex items-center justify-between font-mono text-[9px]">
-                    <span className="rounded border border-[#8b8f6b]/20 bg-[#8b8f6b]/10 px-1.5 py-0.2 text-[#8b8f6b]">
-                      {a.badge}
-                    </span>
-
-                    <span className="text-[#8b8f6b]">{a.year}</span>
-                  </div>
-
-                  <div className="mt-2 font-mono text-[13px] font-bold text-[#e8e6dc]">
-                    {a.label}
-                  </div>
-
-                  <div className="font-mono text-[12px] font-semibold text-emerald-400 mt-0.5">
-                    {a.value}
-                  </div>
-                </div>
+            <div className="tl-list">
+              {EVENTS.map((ev, i) => (
+                <TimelineItem key={ev.id} event={ev} index={i} reduceMotion={reduceMotion} />
               ))}
             </div>
-          </TacticalCard>
+          </div>
 
-          {/* Research Publications */}
-          <TacticalCard className="p-7 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between border-b border-[#c2b8a3]/12 pb-4">
-                <div className="flex items-center gap-2 font-mono text-[13px] font-bold tracking-wider text-[#e8e6dc]">
-                  <IconFileText className="h-4 w-4 text-emerald-400" />
-                  PEER-REVIEWED RESEARCH
-                </div>
-
-                <span className="font-mono text-[10px] tracking-widest text-[#8b8f6b]">
-                  IEEE // ICRA
-                </span>
-              </div>
-
-              <div className="mt-5 space-y-4">
-                {RESEARCH_PAPERS.map((paper, i) => (
-                  <div
-                    key={i}
-                    className="rounded-lg border border-white/[0.10] bg-white/[0.05] backdrop-blur-md p-4 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07]"
-                  >
-                    <div className="flex items-center justify-between font-mono text-[10px] text-[#8b8f6b]">
-                      <span className="font-bold text-emerald-400">
-                        {paper.tag}
-                      </span>
-
-                      <span>{paper.year}</span>
-                    </div>
-
-                    <div className="mt-2 font-mono text-[13px] font-bold leading-snug text-[#e8e6dc]">
-                      {paper.title}
-                    </div>
-
-                    <div className="mt-1 font-mono text-[11px] text-[#8b8f6b]">
-                      — {paper.publisher}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-lg border border-white/[0.10] bg-white/[0.04] backdrop-blur-md p-4 font-mono text-[11px] text-[#c2b8a3]">
-              <span className="font-bold text-emerald-400">NOTE:</span>{" "}
-              Research papers published under institutional review at MIT
-              Manipal. Access full preprints via internal dossier or comms
-              uplink.
-            </div>
-          </TacticalCard>
+          <p className="tl-footnote">
+            <span className="tl-footnote-accent">NOTE:</span> Research papers published under institutional review at MIT Manipal. Access full preprints via internal dossier or comms uplink.
+          </p>
         </div>
       </motion.section>
 
