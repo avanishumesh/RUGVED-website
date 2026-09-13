@@ -7,18 +7,24 @@ export function DefenseBackground() {
   const isLight = theme === "light";
 
   return (
-    <div className={`pointer-events-none fixed inset-0 -z-10 overflow-hidden ${isLight ? "light-mode" : ""}`}>
+    <div
+      className={`pointer-events-none fixed inset-0 -z-10 overflow-hidden ${
+        isLight ? "light-mode" : ""
+      }`}
+    >
       <style>{`
         :root {
-          --void: #050806;
-          --dusk-teal: #0A1B18;
+          --void: #030705;
+          --dusk-teal: #081714;
           --horizon-amber: #FF8C42;
-          --horizon-ember: #3A2712;
-          --phosphor: #00ff9d;
-          --steel-blue: #4A7A8C;
+          
+          /* Tactical, subdued UI colors */
+          --tactical-green: #34d399;
+          --tactical-amber: #fbbf24;
           --ember: #FF4438;
+          --moon-crater: #9DBEB1;
 
-          /* Cartoon Desert Palette (matched to reference illustration) */
+          /* Clean, natural desert palette for daylight */
           --desert-sky-top: #FFF3D6;
           --desert-sky-mid: #FFD98F;
           --desert-sky-low: #FDB870;
@@ -31,7 +37,7 @@ export function DefenseBackground() {
           --desert-dust: #FFE7C2;
           --desert-sun-core: #FFFDF6;
           --desert-sun-ring: #FFEACB;
-          --desert-hud: #A84E28;
+          --desert-hud: #4A2612; /* High contrast for day tags */
 
           /* Transition Timing */
           --transition-duration: 2.6s;
@@ -43,7 +49,7 @@ export function DefenseBackground() {
           width: 100vw;
           height: 100vh;
           min-height: 100vh;
-          background: #040A08;
+          background: #030705;
           overflow: hidden;
           transition: background-color var(--transition-duration) var(--transition-timing);
         }
@@ -58,44 +64,46 @@ export function DefenseBackground() {
           display: block;
         }
 
-        /* SUN RIG — scale via transform, never animate r/geometry attributes.
-           Animating SVG r on transition is not compositor-friendly and is the
-           usual source of jank; every size change below moves through a
-           wrapping <g> transform instead. */
-        .sun-rig {
-          transform: translateY(0px);
-          transition: transform var(--transition-duration) var(--transition-timing);
-          transform-origin: 1020px 560px;
+        /* ── CELESTIAL MECHANICS: MOON SETS / SUN RISES ── */
+        .moon-rig {
+          transform-origin: 680px 260px;
+          transform: translate3d(0, 0, 0) scale(1);
+          opacity: 1;
+          transition: transform var(--transition-duration) var(--transition-timing),
+                      opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .moon-rig {
+          transform: translate3d(-340px, 480px, 0) scale(0.65);
+          opacity: 0;
         }
 
+        .sun-rig {
+          transform-origin: 1060px 560px;
+          transform: translate3d(140px, 340px, 0) scale(0.7);
+          opacity: 0;
+          transition: transform var(--transition-duration) var(--transition-timing),
+                      opacity var(--transition-duration) var(--transition-timing);
+        }
         .light-mode .sun-rig {
-          transform: translateY(-290px);
+          transform: translate3d(0, -290px, 0) scale(1.15);
+          opacity: 1;
         }
 
         .sun-halo-wrap,
         .sun-ring-wrap,
         .sun-disc-wrap {
-          transform-origin: 1020px 560px;
+          transform-origin: 1060px 560px;
           transition: transform var(--transition-duration) var(--transition-timing);
         }
-
         .light-mode .sun-halo-wrap { transform: scale(1.35); }
         .light-mode .sun-ring-wrap { transform: scale(1.15); }
         .light-mode .sun-disc-wrap { transform: scale(1.2); }
-
-        .sun-halo-a, .sun-halo-b {
-          transition: opacity var(--transition-duration) var(--transition-timing);
-        }
-        .sun-halo-a { opacity: 1; }
-        .sun-halo-b { opacity: 0; }
-        .light-mode .sun-halo-a { opacity: 0; }
-        .light-mode .sun-halo-b { opacity: 1; }
 
         .sun-corona-ring {
           opacity: 0;
           transition: opacity var(--transition-duration) var(--transition-timing);
         }
-        .light-mode .sun-corona-ring { opacity: 0.55; }
+        .light-mode .sun-corona-ring { opacity: 0.4; }
 
         .sun-disc-core {
           fill: #FFC988;
@@ -103,7 +111,6 @@ export function DefenseBackground() {
           transition: fill var(--transition-duration) var(--transition-timing),
                       opacity var(--transition-duration) var(--transition-timing);
         }
-
         .light-mode .sun-disc-core {
           fill: var(--desert-sun-core);
           opacity: 1;
@@ -111,13 +118,12 @@ export function DefenseBackground() {
 
         .sun-morning-rays {
           opacity: 0;
-          transform-origin: 1020px 560px;
+          transform-origin: 1060px 560px;
           transition: opacity var(--transition-duration) var(--transition-timing);
           pointer-events: none;
         }
-
         .light-mode .sun-morning-rays {
-          opacity: 0.3;
+          opacity: 0.25;
           animation: rotateRays 160s linear infinite;
         }
 
@@ -126,18 +132,20 @@ export function DefenseBackground() {
           to { transform: rotate(360deg); }
         }
 
+        .moon-telemetry-ring {
+          transform-origin: 680px 260px;
+          animation: rotateRays 220s linear infinite reverse;
+        }
+
         .desert-morning-bloom {
           opacity: 0;
           transition: opacity var(--transition-duration) var(--transition-timing);
           pointer-events: none;
           mix-blend-mode: screen;
         }
+        .light-mode .desert-morning-bloom { opacity: 0.35; }
 
-        .light-mode .desert-morning-bloom {
-          opacity: 0.35;
-        }
-
-        /* CLOUD SWOOSHES — soft flat cartoon cloud bands, slow parallax drift */
+        /* CLOUDS */
         .cloud-band {
           fill: var(--desert-cloud);
           opacity: 0;
@@ -145,15 +153,12 @@ export function DefenseBackground() {
         }
         .light-mode .cloud-band { opacity: 0.55; }
 
-        /* SKY LAYERS CROSS-FADE */
-        .sky-night-layer,
-        .sky-day-layer {
+        /* SKY LAYERS */
+        .sky-night-layer, .sky-day-layer {
           transition: opacity var(--transition-duration) var(--transition-timing);
         }
-
         .sky-night-layer { opacity: 1; }
         .sky-day-layer { opacity: 0; }
-
         .light-mode .sky-night-layer { opacity: 0; }
         .light-mode .sky-day-layer { opacity: 1; }
 
@@ -161,50 +166,41 @@ export function DefenseBackground() {
           opacity: 1;
           transition: opacity calc(var(--transition-duration) * 0.75) var(--transition-timing);
         }
-
         .light-mode .night-starfield { opacity: 0; }
 
-        /* DESERT TERRAIN — smooth rounded cartoon dune silhouettes */
+        /* TERRAIN LAYERS */
         .terrain-bg-path {
-          fill: #0C1A16;
+          fill: #0B1713;
           transition: fill var(--transition-duration) var(--transition-timing);
         }
-        .light-mode .terrain-bg-path {
-          fill: var(--desert-sandstone);
-        }
+        .light-mode .terrain-bg-path { fill: var(--desert-sandstone); }
 
         .terrain-mg-path {
-          fill: #132720;
+          fill: #10221A;
           transition: fill var(--transition-duration) var(--transition-timing);
         }
-        .light-mode .terrain-mg-path {
-          fill: var(--desert-sand);
-        }
+        .light-mode .terrain-mg-path { fill: var(--desert-sand); }
 
         .terrain-fg-rect {
-          fill: #080D09;
+          fill: #060B08;
           transition: fill var(--transition-duration) var(--transition-timing);
         }
         .light-mode .terrain-fg-rect { fill: var(--desert-shadow); }
 
         .terrain-fg-ridge {
-          fill: #172C1E;
+          fill: #14281B;
           transition: fill var(--transition-duration) var(--transition-timing);
         }
         .light-mode .terrain-fg-ridge { fill: var(--desert-ground); }
 
-        /* Sunlit crest lines — thin highlight strokes tracing the top of each
-           dune layer, only visible in day mode, matching the reference's
-           sun-facing ridge highlights */
         .dune-crest-highlight {
           fill: none;
           stroke-linecap: round;
           opacity: 0;
           transition: opacity var(--transition-duration) var(--transition-timing);
         }
-        .light-mode .dune-crest-highlight { opacity: 0.7; }
+        .light-mode .dune-crest-highlight { opacity: 0.5; }
 
-        /* Soft shadow scoops at dune bases — flat cartoon shading */
         .dune-shadow-scoop {
           fill: var(--desert-shadow);
           opacity: 0;
@@ -217,48 +213,143 @@ export function DefenseBackground() {
           transition: fill var(--transition-duration) var(--transition-timing);
         }
         .scroll-fog {
-          opacity: 0.16;
+          opacity: 0.12;
           transition: opacity var(--transition-duration) var(--transition-timing);
         }
         .light-mode .fog-haze-band ellipse { fill: var(--desert-dust); }
         .light-mode .scroll-fog { opacity: 0.3; }
 
         .tower-structural-lines line {
-          stroke: #1F3730;
+          stroke: #1B352E;
           transition: stroke var(--transition-duration) var(--transition-timing);
         }
         .light-mode .tower-structural-lines line { stroke: #A76241; }
 
-        /* TACTICAL DRONES & UGV */
-        .drone-body-dark { fill: #0D1812; transition: fill var(--transition-duration) var(--transition-timing); }
-        .drone-body-light { fill: #172C1E; transition: fill var(--transition-duration) var(--transition-timing); }
-        .drone-wing-line { stroke: #1A3021; transition: stroke var(--transition-duration) var(--transition-timing); }
-        .light-mode .drone-body-dark { fill: #52392A; }
-        .light-mode .drone-body-light { fill: #7D5C46; }
-        .light-mode .drone-wing-line { stroke: #9E7A60; }
+        /* ── VOLUMETRIC VEHICLE LIGHTING ── */
+        .ugv-headlight-beam {
+          opacity: 0.15;
+          mix-blend-mode: screen;
+          transition: opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .ugv-headlight-beam { opacity: 0; }
 
-        /* UGV explicitly maintains its darkish green color profile across both modes */
-        .ugv-chassis-lower { fill: #0F1A12; }
-        .ugv-armor-mid { fill: #1A3021; }
-        .ugv-armor-plate { fill: #24422D; }
-        .ugv-turret-mount { fill: #0B120D; }
-        .ugv-turret-dome { fill: #14261A; }
-        .ugv-wheel-rim { fill: #1A3021; }
-        .ugv-wheel-spoke { stroke: #24422D; }
-        .ugv-antenna-mast { stroke: #24422D; }
+        .ugv-ground-spot {
+          opacity: 0.15;
+          mix-blend-mode: screen;
+          transition: opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .ugv-ground-spot { opacity: 0; }
+
+        .drone-searchlight {
+          opacity: 0.12;
+          mix-blend-mode: screen;
+          transition: opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .drone-searchlight { opacity: 0; }
+
+        .drone-ground-footprint {
+          opacity: 0.1;
+          mix-blend-mode: screen;
+          transition: opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .drone-ground-footprint { opacity: 0; }
+
+        /* Tactical Matte Armor for UGV */
+        .ugv-armor-plate, .ugv-armor-mid {
+          stroke: #223B2A;
+          stroke-width: 0.8px;
+          stroke-linejoin: round;
+          transition: stroke var(--transition-duration) var(--transition-timing),
+                      fill var(--transition-duration) var(--transition-timing);
+        }
+        .ugv-chassis-lower { fill: #08120B; stroke: #182E20; stroke-width: 0.8px; }
+        .ugv-armor-mid { fill: #0E1F14; }
+        .ugv-armor-plate { fill: #142E1D; }
+        .ugv-turret-mount { fill: #070F0A; stroke: #182E20; stroke-width: 0.8px; }
+        .ugv-turret-dome { fill: #0F2115; stroke: #223B2A; stroke-width: 1px; }
+
+        .light-mode .ugv-armor-plate,
+        .light-mode .ugv-armor-mid { stroke: rgba(0,0,0,0.2); stroke-width: 0.5px; }
+        .light-mode .ugv-chassis-lower { stroke: none; }
+        .light-mode .ugv-turret-mount { stroke: none; }
+        .light-mode .ugv-turret-dome { stroke: none; }
+
+        .ugv-wheel-rim { fill: #172E1E; stroke: #2A4733; stroke-width: 0.5px; }
+        .ugv-wheel-spoke { stroke: #204029; }
+        .ugv-antenna-mast { stroke: #2E5C3B; }
         .ugv-motes { fill: var(--ember); }
 
-        .subterranean-radar-feed { stroke: var(--phosphor); transition: stroke var(--transition-duration) var(--transition-timing); }
-        .subterranean-radar-feed text { fill: var(--phosphor); transition: fill var(--transition-duration) var(--transition-timing); }
-        .subterranean-radar-pulse { stroke: var(--phosphor); transition: stroke var(--transition-duration) var(--transition-timing); }
+        /* Drone Body Styling */
+        .drone-body-dark {
+          fill: #09120D;
+          stroke: #1D3625;
+          stroke-width: 0.8px;
+          transition: fill var(--transition-duration) var(--transition-timing),
+                      stroke var(--transition-duration) var(--transition-timing);
+        }
+        .drone-body-light {
+          fill: #112117;
+          stroke: #25422F;
+          stroke-width: 0.6px;
+          transition: fill var(--transition-duration) var(--transition-timing),
+                      stroke var(--transition-duration) var(--transition-timing);
+        }
+        .drone-wing-line {
+          stroke: #223E2B;
+          transition: stroke var(--transition-duration) var(--transition-timing);
+        }
 
-        .light-mode .subterranean-radar-feed { stroke: #5C220E; }
-        .light-mode .subterranean-radar-feed text { fill: #5C220E; }
-        .light-mode .subterranean-radar-pulse { stroke: #5C220E; }
+        .light-mode .drone-body-dark { fill: #52392A; stroke: none; }
+        .light-mode .drone-body-light { fill: #7D5C46; stroke: none; }
+        .light-mode .drone-wing-line { stroke: #9E7A60; }
 
-        /* MATHEMATICAL PARALLAX LOOPING KEYFRAMES — all transform-based
-           (translate3d), which stays on the compositor and avoids stutter
-           regardless of how many layers are running at once. */
+        /* Tactical HUD tags (More visible now) */
+        .tactical-hud-text {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+          font-size: 8px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          fill: var(--tactical-green);
+          opacity: 0.75;
+          transition: fill var(--transition-duration) var(--transition-timing),
+                      opacity var(--transition-duration) var(--transition-timing);
+        }
+        .light-mode .tactical-hud-text {
+          fill: var(--desert-hud);
+          opacity: 0.85; /* Clearly visible in day mode */
+        }
+
+        /* GROUND PENETRATING RADAR (GPR) - Enhanced Visibility */
+        .subterranean-radar-feed {
+          stroke: var(--tactical-green);
+          opacity: 0.5; /* Much brighter at night */
+          transition: stroke var(--transition-duration) var(--transition-timing),
+                      opacity var(--transition-duration) var(--transition-timing);
+        }
+        .subterranean-radar-feed text {
+          fill: var(--tactical-green);
+          transition: fill var(--transition-duration) var(--transition-timing);
+        }
+        .subterranean-radar-pulse {
+          stroke: var(--tactical-green);
+          opacity: 0.45; /* Much brighter at night */
+          transition: stroke var(--transition-duration) var(--transition-timing),
+                      opacity var(--transition-duration) var(--transition-timing);
+        }
+        
+        .light-mode .subterranean-radar-feed {
+          stroke: #8B3A14; /* Copper/scorched earth tone */
+          opacity: 0.55; 
+        }
+        .light-mode .subterranean-radar-feed text {
+          fill: #5C260D; /* Darker brown for text */
+        }
+        .light-mode .subterranean-radar-pulse {
+          stroke: #A0522D; /* Sienna */
+          opacity: 0.5;
+        }
+
+        /* ── GPU PARALLAX LOOPING KEYFRAMES ── */
         @keyframes scrollLeft {
           from { transform: translate3d(0, 0, 0); }
           to { transform: translate3d(-1920px, 0, 0); }
@@ -294,21 +385,21 @@ export function DefenseBackground() {
         .drone-3 { animation: drone-bob3 4.8s ease-in-out infinite; }
 
         @keyframes beacon-flash {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.15; }
+          50% { opacity: 0.6; }
         }
         .beacon { animation: beacon-flash 2s infinite; }
 
         @keyframes beacon-flash-ember {
-          0%, 92% { opacity: 0.15; }
-          96% { opacity: 1; }
-          100% { opacity: 0.15; }
+          0%, 92% { opacity: 0.1; }
+          96% { opacity: 0.7; }
+          100% { opacity: 0.1; }
         }
         .beacon-ember { animation: beacon-flash-ember 3.6s infinite; }
 
         @keyframes beacon-flash-amber {
-          0%, 100% { opacity: 0.25; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.15; }
+          50% { opacity: 0.6; }
         }
         .beacon-amber { animation: beacon-flash-amber 2.3s infinite; }
 
@@ -338,17 +429,17 @@ export function DefenseBackground() {
 
         @keyframes mote-rise-a {
           0% { transform: translate3d(0, 0, 0); opacity: 0; }
-          15% { opacity: 0.8; }
+          15% { opacity: 0.4; }
           100% { transform: translate3d(-40px, -70px, 0); opacity: 0; }
         }
         @keyframes mote-rise-b {
           0% { transform: translate3d(0, 0, 0); opacity: 0; }
-          20% { opacity: 0.7; }
+          20% { opacity: 0.35; }
           100% { transform: translate3d(-25px, -95px, 0); opacity: 0; }
         }
         @keyframes mote-rise-c {
           0% { transform: translate3d(0, 0, 0); opacity: 0; }
-          10% { opacity: 0.6; }
+          10% { opacity: 0.3; }
           100% { transform: translate3d(-55px, -50px, 0); opacity: 0; }
         }
         .mote-a { animation: mote-rise-a 2.6s ease-out infinite; }
@@ -359,38 +450,41 @@ export function DefenseBackground() {
           position: absolute;
           top: 0; left: 0;
           width: 100%; height: 100%;
-          box-shadow: inset 0 0 160px rgba(0,0,0,0.9);
+          box-shadow: inset 0 0 160px rgba(0,0,0,0.95);
           pointer-events: none;
           transition: box-shadow var(--transition-duration) var(--transition-timing);
         }
-
         .light-mode .vignette {
-          box-shadow: inset 0 0 120px rgba(168, 78, 40, 0.18);
+          box-shadow: inset 0 0 120px rgba(168, 78, 40, 0.15);
         }
 
         .scanlines {
           position: absolute;
           top: 0; left: 0;
           width: 100%; height: 100%;
-          background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.2) 50%);
+          background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%);
           background-size: 100% 4px;
           pointer-events: none;
           transition: opacity var(--transition-duration) var(--transition-timing);
         }
+        .light-mode .scanlines { opacity: 0.08; }
 
-        .light-mode .scanlines {
-          opacity: 0.15;
+        @media (prefers-reduced-motion: reduce) {
+          .scroll-fg, .scroll-mg, .scroll-bg, .scroll-towers, .scroll-fog, .scroll-drones, .scroll-clouds, .sat-drift, .wheel, .ugv-anim, .sun-morning-rays, .moon-telemetry-ring {
+            animation: none !important;
+          }
         }
       `}</style>
 
       <div className="hero-wrapper">
         <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
           <defs>
+            {/* SKY GRADIENTS */}
             <linearGradient id="skyGradNight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#040A08" />
-              <stop offset="42%" stopColor="#0A1B18" />
-              <stop offset="70%" stopColor="#17251C" />
-              <stop offset="100%" stopColor="#3A2712" />
+              <stop offset="0%" stopColor="#020604" />
+              <stop offset="38%" stopColor="#081814" />
+              <stop offset="68%" stopColor="#122A21" />
+              <stop offset="100%" stopColor="#2E1F0E" />
             </linearGradient>
 
             <linearGradient id="skyGradDay" x1="0" y1="0" x2="0" y2="1">
@@ -400,12 +494,20 @@ export function DefenseBackground() {
               <stop offset="100%" stopColor="#FDB870" />
             </linearGradient>
 
-            <radialGradient id="sunGlowNight" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FFC988" stopOpacity="0.95" />
-              <stop offset="35%" stopColor="#FF8C42" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#FF8C42" stopOpacity="0" />
+            {/* MOON GRADIENTS */}
+            <radialGradient id="moonGlowHalo" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#C8FFF0" stopOpacity="0.3" />
+              <stop offset="50%" stopColor="#34d399" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
             </radialGradient>
 
+            <linearGradient id="moonDiscGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#E2EDE7" />
+              <stop offset="65%" stopColor="#C4DDD2" />
+              <stop offset="100%" stopColor="#9CBEAE" />
+            </linearGradient>
+
+            {/* SUN GRADIENTS */}
             <radialGradient id="sunGlowDay" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
               <stop offset="24%" stopColor="#FFF6DE" stopOpacity="0.85" />
@@ -419,8 +521,33 @@ export function DefenseBackground() {
               <stop offset="100%" stopColor="#F8C27E" stopOpacity="0" />
             </radialGradient>
 
+            {/* VOLUMETRIC LIGHTING GRADIENTS */}
+            <linearGradient id="ugvHeadlightCone" x1="0" y1="0" x2="1" y2="0.3">
+              <stop offset="0%" stopColor="#E6FFF6" stopOpacity="0.6" />
+              <stop offset="30%" stopColor="#34D399" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#34D399" stopOpacity="0" />
+            </linearGradient>
+
+            <radialGradient id="ugvGroundSpot" cx="40%" cy="50%" r="60%">
+              <stop offset="0%" stopColor="#E6FFF6" stopOpacity="0.5" />
+              <stop offset="60%" stopColor="#34D399" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#34D399" stopOpacity="0" />
+            </radialGradient>
+
+            <linearGradient id="droneScanConeGreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#34D399" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#34D399" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#34D399" stopOpacity="0" />
+            </linearGradient>
+
+            <linearGradient id="droneScanConeAmber" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FFB347" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#FFB347" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#FFB347" stopOpacity="0" />
+            </linearGradient>
+
             <filter id="shadow" x="-10%" y="-30%" width="120%" height="160%">
-              <feDropShadow dx="0" dy="-10" stdDeviation="15" floodColor="#000000" floodOpacity="0.85" />
+              <feDropShadow dx="0" dy="-10" stdDeviation="15" floodColor="#000000" floodOpacity="0.75" />
             </filter>
 
             <filter id="soft-blur" x="-20%" y="-100%" width="140%" height="300%">
@@ -431,9 +558,7 @@ export function DefenseBackground() {
               <feGaussianBlur stdDeviation="10" />
             </filter>
 
-            {/* Smooth rounded dune silhouettes — replaces the old jagged
-                zig-zag lines with cartoon-style bezier curves like the
-                reference illustration. */}
+            {/* TERRAIN SHAPES */}
             <path id="path-bg" className="terrain-bg-path"
               d="M-10,560 C160,470 320,430 480,460 C640,490 760,380 940,360 C1120,340 1260,430 1420,410 C1580,390 1740,460 1930,480 L1930,1080 L-10,1080 Z" />
 
@@ -446,6 +571,7 @@ export function DefenseBackground() {
                 d="M-10,830 C160,780 300,820 460,790 C620,760 740,830 900,800 C1060,770 1180,830 1340,800 C1500,770 1660,820 1930,800 L1930,1080 L-10,1080 Z" />
             </g>
 
+            {/* RELAY TOWER */}
             <g id="tower">
               <g className="tower-structural-lines">
                 <line x1="0" y1="0" x2="0" y2="160" strokeWidth="4" />
@@ -455,31 +581,49 @@ export function DefenseBackground() {
                 <line x1="-9" y1="45" x2="9" y2="45" strokeWidth="2" />
                 <line x1="-18" y1="30" x2="18" y2="10" strokeWidth="2" />
               </g>
-              <circle cx="0" cy="0" r="4" fill="var(--ember)" className="beacon-ember" />
+              <circle cx="0" cy="0" r="3" fill="var(--ember)" className="beacon-ember" />
             </g>
 
+            {/* DRONE WITH SEARCHLIGHT (GREEN PHOSPHOR) */}
             <g id="drone" transform="scale(1.2)">
+              <polygon points="-4,8 4,8 45,180 -45,180" fill="url(#droneScanConeGreen)" className="drone-searchlight" />
+              <ellipse cx="0" cy="180" rx="45" ry="9" fill="url(#droneScanConeGreen)" className="drone-ground-footprint" />
+
               <polygon points="-15,0 15,-5 20,5 15,10 -10,10" className="drone-body-dark" />
               <polygon points="-5,-5 10,-5 10,0 -5,0" className="drone-body-light" />
-              <line x1="-20" y1="5" x2="25" y2="5" className="drone-wing-line" strokeWidth="2" />
-              <ellipse cx="-20" cy="3" rx="8" ry="2" stroke="rgba(100,160,120,0.3)" fill="none" strokeWidth="1" />
-              <ellipse cx="25" cy="3" rx="8" ry="2" stroke="rgba(100,160,120,0.3)" fill="none" strokeWidth="1" />
-              <circle cx="0" cy="8" r="2.5" fill="var(--phosphor)" className="beacon" />
+              <line x1="-20" y1="5" x2="25" y2="5" className="drone-wing-line" strokeWidth="1.5" />
+              <ellipse cx="-20" cy="3" rx="8" ry="2" stroke="rgba(52,211,153,0.3)" fill="none" strokeWidth="1" />
+              <ellipse cx="25" cy="3" rx="8" ry="2" stroke="rgba(52,211,153,0.3)" fill="none" strokeWidth="1" />
+              <circle cx="0" cy="8" r="1.5" fill="var(--tactical-green)" className="beacon" />
+
+              {/* HUD Flight Bracket */}
+              <g transform="translate(18, -12)">
+                <text className="tactical-hud-text">UAV-01 // RECON</text>
+              </g>
             </g>
 
+            {/* DRONE WITH SEARCHLIGHT (AMBER) */}
             <g id="drone-amber" transform="scale(1.2)">
+              <polygon points="-4,8 4,8 45,180 -45,180" fill="url(#droneScanConeAmber)" className="drone-searchlight" />
+              <ellipse cx="0" cy="180" rx="45" ry="9" fill="url(#droneScanConeAmber)" className="drone-ground-footprint" />
+
               <polygon points="-15,0 15,-5 20,5 15,10 -10,10" className="drone-body-dark" />
               <polygon points="-5,-5 10,-5 10,0 -5,0" className="drone-body-light" />
-              <line x1="-20" y1="5" x2="25" y2="5" className="drone-wing-line" strokeWidth="2" />
-              <ellipse cx="-20" cy="3" rx="8" ry="2" stroke="rgba(160,130,90,0.3)" fill="none" strokeWidth="1" />
-              <ellipse cx="25" cy="3" rx="8" ry="2" stroke="rgba(160,130,90,0.3)" fill="none" strokeWidth="1" />
-              <circle cx="0" cy="8" r="2.5" fill="var(--horizon-amber)" className="beacon-amber" />
+              <line x1="-20" y1="5" x2="25" y2="5" className="drone-wing-line" strokeWidth="1.5" />
+              <ellipse cx="-20" cy="3" rx="8" ry="2" stroke="rgba(251,191,36,0.3)" fill="none" strokeWidth="1" />
+              <ellipse cx="25" cy="3" rx="8" ry="2" stroke="rgba(251,191,36,0.3)" fill="none" strokeWidth="1" />
+              <circle cx="0" cy="8" r="1.5" fill="var(--tactical-amber)" className="beacon-amber" />
+
+              <g transform="translate(18, -12)">
+                <text className="tactical-hud-text" style={{ fill: "var(--tactical-amber)" }}>UAV-02 // FLIR</text>
+              </g>
             </g>
 
-            <g id="wireframes" className="subterranean-radar-feed" fill="none" strokeWidth="2" fontFamily="monospace" fontSize="14">
-              <line x1="0" y1="880" x2="1920" y2="880" strokeWidth="1" strokeDasharray="5 5" opacity="0.4" />
-              <line x1="0" y1="960" x2="1920" y2="960" strokeWidth="1" strokeDasharray="5 5" opacity="0.4" />
-              <line x1="0" y1="1040" x2="1920" y2="1040" strokeWidth="1" strokeDasharray="5 5" opacity="0.4" />
+            {/* SUBTERRANEAN GPR TELEMETRY */}
+            <g id="wireframes" className="subterranean-radar-feed" fill="none" strokeWidth="2.5" fontFamily="monospace" fontSize="13">
+              <line x1="0" y1="880" x2="1920" y2="880" strokeWidth="1.5" strokeDasharray="5 5" opacity="0.4" />
+              <line x1="0" y1="960" x2="1920" y2="960" strokeWidth="1.5" strokeDasharray="5 5" opacity="0.4" />
+              <line x1="0" y1="1040" x2="1920" y2="1040" strokeWidth="1.5" strokeDasharray="5 5" opacity="0.4" />
 
               <rect x="250" y="910" width="160" height="70" />
               <line x1="250" y1="910" x2="410" y2="980" />
@@ -506,12 +650,8 @@ export function DefenseBackground() {
             <mask id="radar-mask">
               <rect x="0" y="0" width="1920" height="1080" fill="black" />
               <circle cx="480" cy="815" r="0" fill="white">
-                <animate attributeName="r" values="0; 450" dur="2.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="1; 0" dur="2.4s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="480" cy="815" r="0" fill="white">
-                <animate attributeName="r" values="0; 450" begin="1.2s" dur="2.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="1; 0" begin="1.2s" dur="2.4s" repeatCount="indefinite" />
+                <animate attributeName="r" values="0; 450" dur="3.5s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.8; 0" dur="3.5s" repeatCount="indefinite" />
               </circle>
             </mask>
           </defs>
@@ -534,7 +674,7 @@ export function DefenseBackground() {
             <circle cx="1820" cy="85" r="1.2" />
           </g>
 
-          {/* LAYER 1a: CARTOON CLOUD SWOOSHES (day only, slow drift) */}
+          {/* LAYER 1a: CARTOON CLOUD SWOOSHES */}
           <g className="scroll-clouds" filter="url(#cloud-blur)">
             <ellipse className="cloud-band" cx="260" cy="230" rx="220" ry="18" />
             <ellipse className="cloud-band" cx="720" cy="160" rx="170" ry="14" />
@@ -544,34 +684,43 @@ export function DefenseBackground() {
             <ellipse className="cloud-band" cx="3400" cy="200" rx="260" ry="20" />
           </g>
 
-          {/* LAYER 1b: THE SUN RIG — cartoon halo + corona ring + solid disc,
-              styled after the reference image's sun treatment. Every size
-              change is a transform on a wrapping <g>, never an r/attribute
-              animation, so the crossfade stays smooth. */}
+          {/* ── LAYER 1b: TACTICAL MOON (NIGHT TIME PROMINENCE) ── */}
+          <g className="moon-rig" id="moonRig">
+            <circle cx="680" cy="260" r="180" fill="url(#moonGlowHalo)" />
+            <circle className="moon-telemetry-ring" cx="680" cy="260" r="76" fill="none" stroke="var(--tactical-green)" strokeWidth="0.5" strokeDasharray="4 16" opacity="0.15" />
+            <circle cx="680" cy="260" r="90" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" strokeDasharray="2 30" />
+            <circle cx="680" cy="260" r="54" fill="url(#moonDiscGrad)" />
+            <circle cx="664" cy="245" r="10" fill="var(--moon-crater)" opacity="0.4" />
+            <circle cx="698" cy="276" r="13" fill="var(--moon-crater)" opacity="0.35" />
+            <circle cx="672" cy="285" r="7" fill="var(--moon-crater)" opacity="0.3" />
+            <circle cx="704" cy="248" r="6" fill="var(--moon-crater)" opacity="0.25" />
+          </g>
+
+          {/* ── LAYER 1c: THE DESERT SUN (RISES ON LIGHT MODE) ── */}
           <g className="sun-rig" id="sunRig">
             <g className="sun-morning-rays">
-              <path d="M 1020,560 Q 980,300 950,200" stroke="#FFF3D6" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.6" />
-              <path d="M 1020,560 Q 1070,320 1100,180" stroke="#FFF3D6" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
+              <path d="M 1060,560 Q 1020,300 990,200" stroke="#FFF3D6" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.6" />
+              <path d="M 1060,560 Q 1110,320 1140,180" stroke="#FFF3D6" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5" />
+              <path d="M 1060,560 Q 940,420 860,370" stroke="#FFF3D6" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.4" />
             </g>
             <g className="sun-halo-wrap">
-              <circle className="sun-halo-a" cx="1020" cy="560" r="180" fill="url(#sunGlowNight)" />
-              <circle className="sun-halo-b" cx="1020" cy="560" r="220" fill="url(#sunGlowDay)" />
+              <circle cx="1060" cy="560" r="220" fill="url(#sunGlowDay)" />
             </g>
             <g className="sun-ring-wrap">
-              <circle className="sun-corona-ring" cx="1020" cy="560" r="95" fill="none" stroke="var(--desert-sun-ring)" strokeWidth="14" />
+              <circle className="sun-corona-ring" cx="1060" cy="560" r="96" fill="none" stroke="var(--desert-sun-ring)" strokeWidth="14" />
             </g>
             <g className="sun-disc-wrap">
-              <circle className="sun-disc-core" cx="1020" cy="560" r="55" />
+              <circle className="sun-disc-core" cx="1060" cy="560" r="55" />
             </g>
           </g>
 
-          {/* Atmospheric Morning Desert Sun Bloom */}
+          {/* Atmospheric Morning Bloom */}
           <rect className="desert-morning-bloom" x="0" y="0" width="1920" height="1080" fill="url(#morningBloom)" />
 
-          {/* LAYER 1c: DISTANT AIR TRAFFIC */}
+          {/* HIGH ALTITUDE AVIATION BEACONS */}
           <g className="sat-drift" fill="none">
-            <circle cx="300" cy="150" r="2" fill="var(--horizon-amber)" className="beacon-amber" />
-            <circle cx="1600" cy="110" r="1.6" fill="var(--phosphor)" className="beacon" />
+            <circle cx="300" cy="150" r="1.5" fill="var(--horizon-amber)" className="beacon-amber" />
+            <circle cx="1600" cy="110" r="1.5" fill="var(--tactical-green)" className="beacon" />
           </g>
 
           {/* LAYER 2: RELAY TOWERS */}
@@ -602,21 +751,21 @@ export function DefenseBackground() {
             <ellipse cx="3620" cy="635" rx="380" ry="38" />
           </g>
 
-          {/* LAYER 4: AUTONOMOUS DRONE SWARM */}
+          {/* ── LAYER 4: AUTONOMOUS DRONE PATROL (LOWERED ~200px) ── */}
           <g className="scroll-drones">
             <g transform="translate(0, 0)">
-              <g transform="translate(250, 150)"><use href="#drone" className="drone-1" /></g>
-              <g transform="translate(600, 120)"><use href="#drone-amber" className="drone-2" /></g>
-              <g transform="translate(950, 220)"><use href="#drone" className="drone-3" /></g>
-              <g transform="translate(1300, 180)"><use href="#drone-amber" className="drone-1" /></g>
-              <g transform="translate(1750, 200)"><use href="#drone" className="drone-2" /></g>
+              <g transform="translate(250, 350)"><use href="#drone" className="drone-1" /></g>
+              <g transform="translate(600, 320)"><use href="#drone-amber" className="drone-2" /></g>
+              <g transform="translate(950, 420)"><use href="#drone" className="drone-3" /></g>
+              <g transform="translate(1300, 380)"><use href="#drone-amber" className="drone-1" /></g>
+              <g transform="translate(1750, 400)"><use href="#drone" className="drone-2" /></g>
             </g>
             <g transform="translate(1920, 0)">
-              <g transform="translate(250, 150)"><use href="#drone" className="drone-1" /></g>
-              <g transform="translate(600, 120)"><use href="#drone-amber" className="drone-2" /></g>
-              <g transform="translate(950, 220)"><use href="#drone" className="drone-3" /></g>
-              <g transform="translate(1300, 180)"><use href="#drone-amber" className="drone-1" /></g>
-              <g transform="translate(1750, 200)"><use href="#drone" className="drone-2" /></g>
+              <g transform="translate(250, 350)"><use href="#drone" className="drone-1" /></g>
+              <g transform="translate(600, 320)"><use href="#drone-amber" className="drone-2" /></g>
+              <g transform="translate(950, 420)"><use href="#drone" className="drone-3" /></g>
+              <g transform="translate(1300, 380)"><use href="#drone-amber" className="drone-1" /></g>
+              <g transform="translate(1750, 400)"><use href="#drone" className="drone-2" /></g>
             </g>
           </g>
 
@@ -633,7 +782,7 @@ export function DefenseBackground() {
             <ellipse className="dune-shadow-scoop" cx="2560" cy="760" rx="220" ry="55" />
           </g>
 
-          {/* LAYER 6: FOREGROUND DESERT TERRAIN */}
+          {/* LAYER 6: FOREGROUND DUNES & SUBTERRANEAN SCAN */}
           <g className="scroll-fg" filter="url(#shadow)">
             <use href="#path-fg" x="0" />
             <use href="#path-fg" x="1920" />
@@ -650,16 +799,19 @@ export function DefenseBackground() {
             </g>
           </g>
 
-          {/* LAYER 7: TACTICAL UGV GROUND VEHICLE (Darkish Green Maintained in both modes) */}
+          {/* ── LAYER 7: TACTICAL UGV WALRUS 2.0 ── */}
           <g className="ugv-anim" transform="translate(480, 800) scale(1.4)">
-            <g className="ugv-motes" transform="translate(-45, 18)" opacity="0.75">
+            <polygon points="45,-6 45,6 260,35 220,-16" fill="url(#ugvHeadlightCone)" className="ugv-headlight-beam" />
+            <ellipse cx="190" cy="25" rx="95" ry="16" fill="url(#ugvGroundSpot)" className="ugv-ground-spot" />
+
+            <g className="ugv-motes" transform="translate(-45, 18)" opacity="0.6">
               <circle r="2.2" className="mote-a" />
               <circle r="1.8" className="mote-b" />
               <circle r="2.5" className="mote-c" />
             </g>
 
             <line className="ugv-antenna-mast" x1="-25" y1="-22" x2="-35" y2="-45" strokeWidth="1.5" />
-            <circle cx="-35" cy="-45" r="1.5" fill="var(--phosphor)" className="beacon" />
+            <circle cx="-35" cy="-45" r="1.5" fill="var(--ember)" className="beacon-ember" />
 
             <polygon className="ugv-chassis-lower" points="-50,5 50,5 40,15 -40,15" />
             <polygon className="ugv-armor-mid" points="-50,-10 -35,-25 10,-25 35,-15 50,-5 50,5 -50,5" />
@@ -667,11 +819,12 @@ export function DefenseBackground() {
 
             <rect className="ugv-turret-mount" x="-15" y="-35" width="20" height="10" />
             <circle className="ugv-turret-dome" cx="-5" cy="-35" r="7" />
-            <circle cx="0" cy="-35" r="2" fill="var(--phosphor)" className="beacon" />
+            <circle cx="-1" cy="-35" r="1.5" fill="var(--tactical-green)" className="beacon" />
+            <circle cx="-6" cy="-35" r="1.2" fill="var(--ember)" />
 
             <g transform="translate(-35, 12)">
               <g className="wheel">
-                <circle cx="0" cy="0" r="10" fill="#060A07" />
+                <circle cx="0" cy="0" r="10" fill="#040805" />
                 <circle className="ugv-wheel-rim" cx="0" cy="0" r="5" />
                 <line className="ugv-wheel-spoke" x1="-10" y1="0" x2="10" y2="0" strokeWidth="1.5" />
                 <line className="ugv-wheel-spoke" x1="0" y1="-10" x2="0" y2="10" strokeWidth="1.5" />
@@ -679,7 +832,7 @@ export function DefenseBackground() {
             </g>
             <g transform="translate(-10, 12)">
               <g className="wheel">
-                <circle cx="0" cy="0" r="10" fill="#060A07" />
+                <circle cx="0" cy="0" r="10" fill="#040805" />
                 <circle className="ugv-wheel-rim" cx="0" cy="0" r="5" />
                 <line className="ugv-wheel-spoke" x1="-10" y1="0" x2="10" y2="0" strokeWidth="1.5" />
                 <line className="ugv-wheel-spoke" x1="0" y1="-10" x2="0" y2="10" strokeWidth="1.5" />
@@ -687,7 +840,7 @@ export function DefenseBackground() {
             </g>
             <g transform="translate(15, 12)">
               <g className="wheel">
-                <circle cx="0" cy="0" r="10" fill="#060A07" />
+                <circle cx="0" cy="0" r="10" fill="#040805" />
                 <circle className="ugv-wheel-rim" cx="0" cy="0" r="5" />
                 <line className="ugv-wheel-spoke" x1="-10" y1="0" x2="10" y2="0" strokeWidth="1.5" />
                 <line className="ugv-wheel-spoke" x1="0" y1="-10" x2="0" y2="10" strokeWidth="1.5" />
@@ -695,34 +848,33 @@ export function DefenseBackground() {
             </g>
             <g transform="translate(40, 12)">
               <g className="wheel">
-                <circle cx="0" cy="0" r="10" fill="#060A07" />
+                <circle cx="0" cy="0" r="10" fill="#040805" />
                 <circle className="ugv-wheel-rim" cx="0" cy="0" r="5" />
                 <line className="ugv-wheel-spoke" x1="-10" y1="0" x2="10" y2="0" strokeWidth="1.5" />
                 <line className="ugv-wheel-spoke" x1="0" y1="-10" x2="0" y2="10" strokeWidth="1.5" />
               </g>
             </g>
 
-            <rect x="-20" y="15" width="40" height="6" fill="#070D09" />
-            <rect x="-18" y="17" width="36" height="2" fill="var(--phosphor)" />
+            <g transform="translate(-40, -56)">
+              <text className="tactical-hud-text">WALRUS 2.0 // AUTO-SLAM</text>
+            </g>
           </g>
 
-          {/* LAYER 8: GROUND PENETRATING RADAR */}
+          {/* ── LAYER 8: SUBTERRANEAN SEISMIC RADAR PULSE ── */}
           <g clipPath="url(#ground-clip)">
             <circle className="subterranean-radar-pulse" cx="480" cy="815" r="0" fill="none">
-              <animate attributeName="r" values="0; 450" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="strokeWidth" values="6; 1" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="1; 0" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="r" values="0; 450" dur="3.5s" repeatCount="indefinite" />
+              <animate attributeName="strokeWidth" values="4; 1" dur="3.5s" repeatCount="indefinite" />
             </circle>
             <circle className="subterranean-radar-pulse" cx="480" cy="815" r="0" fill="none">
-              <animate attributeName="r" values="0; 450" begin="1.2s" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="strokeWidth" values="6; 1" begin="1.2s" dur="2.4s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="1; 0" begin="1.2s" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="r" values="0; 450" begin="1.75s" dur="3.5s" repeatCount="indefinite" />
+              <animate attributeName="strokeWidth" values="4; 1" begin="1.75s" dur="3.5s" repeatCount="indefinite" />
             </circle>
           </g>
         </svg>
 
-        <div className="scanlines"></div>
-        <div className="vignette"></div>
+        <div className="scanlines" />
+        <div className="vignette" />
       </div>
     </div>
   );
