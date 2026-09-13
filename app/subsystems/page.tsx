@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import TacticalCard from "@/components/ui/TacticalCard";
 import {
   IconShieldCheck,
@@ -161,7 +160,7 @@ export default function SubsystemsPage() {
       {/* Hero Header with Background Ripple Integration */}
       <div className="relative overflow-hidden rounded-2xl border border-[#c2b8a3]/15 bg-[#0e110e]/80 backdrop-blur-2xl p-8 md:p-12 shadow-2xl">
         <div className="pointer-events-none absolute inset-0 opacity-25">
-          <BackgroundRippleEffect rows={8} cols={28} cellSize={52} />
+         
         </div>
 
         <div className="relative z-10">
