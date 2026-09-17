@@ -455,90 +455,125 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* ── SECTION 01: MILESTONES & SCIENTIFIC ARCHIVE (SLEEK TIMELINE) ── */}
+            {/* ── SECTION 01: MILESTONES & SCIENTIFIC ARCHIVE (SLEEK TIMELINE) ── */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.6, ease: [0.22, 0.9, 0.26, 1] }}
         className="space-y-6"
       >
         <SectionLabel k="01" label="MILESTONES & SCIENTIFIC ARCHIVE" />
 
-        <div className="relative rounded-xl border border-white/[0.08] bg-[#070a08]/60 backdrop-blur-xl p-5 sm:p-8 md:p-12 shadow-2xl">
-          
-          {/* Archive Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-white/[0.06]">
-            <div>
-              <div className="flex items-center gap-2 font-mono text-[10px] tracking-widest text-[#34d399] uppercase font-bold">
-                <span className="w-1.5 h-1.5 rounded-sm bg-[#34d399]" />
-                <span>CHRONOLOGICAL TRAJECTORY & RESEARCH VECTOR</span>
+        <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#070a08]/70 backdrop-blur-xl shadow-[0_24px_80px_-32px_rgba(0,0,0,0.9)]">
+          {/* Hairline survey grid — the panel reads as an instrument surface */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, #35d399 1px, transparent 1px), linear-gradient(to bottom, #35d399 1px, transparent 1px)",
+              backgroundSize: "72px 72px",
+            }}
+          />
+
+          {/* Corner brackets */}
+          <div aria-hidden className="pointer-events-none absolute left-0 top-0 h-8 w-8 border-l border-t border-[#35d399]/25 rounded-tl-2xl" />
+          <div aria-hidden className="pointer-events-none absolute right-0 bottom-0 h-8 w-8 border-r border-b border-[#35d399]/25 rounded-br-2xl" />
+
+          <div className="relative p-5 sm:p-8 md:p-12">
+            {/* ── HEADER ── */}
+            <header className="flex flex-col gap-5 pb-7 mb-2 border-b border-white/[0.06] lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+              <div className="max-w-2xl">
+                <h2 className="font-commissioner font-bold text-2xl md:text-[28px] leading-tight text-[#f2efe6] tracking-tight">
+                  MIT Manipal Defence Robotics History
+                </h2>
+                <p className="mt-2.5 text-sm leading-relaxed text-[#8b8f6b]">
+                  Every fielded platform, competition result and published paper,
+                  in the order it happened.
+                </p>
+                <div className="mt-4 flex items-center gap-3 font-mono text-[10px] tracking-[0.18em] text-[#5e6149]">
+                  <span className="h-1 w-1 rounded-full bg-[#35d399]" />
+                  <span>{EVENTS.length} RECORDS</span>
+                  <span className="h-px w-6 bg-white/10" />
+                  <span>RESEARCH VECTOR</span>
+                </div>
               </div>
-              <h2 className="font-commissioner font-bold text-xl md:text-2xl text-[#f2efe6] tracking-tight mt-2">
-                MIT Manipal Defence Robotics History
-              </h2>
-            </div>
 
-            {/* Scroll-Synced HUD Progress Pill */}
-            <div className="flex items-center gap-3 px-3.5 py-2 rounded border border-white/[0.10] bg-white/[0.02] backdrop-blur-md self-start sm:self-center">
-              <IconRadar className="h-3.5 w-3.5 text-[#34d399] animate-spin" />
-              <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-[#8b8f6b]">
-                <span>VECTOR</span>
-                <span className="font-bold text-[#34d399] min-w-[28px]">
-                  <DynamicPercent value={percentReadout} />%
-                </span>
+              {/* Scroll-synced survey readout */}
+              <div className="w-full max-w-[280px] rounded-lg border border-white/[0.08] bg-white/[0.015] px-4 py-3.5 backdrop-blur-md">
+                <div className="flex items-baseline justify-between font-mono">
+                  <span className="flex items-center gap-2 text-[10px] tracking-[0.18em] text-[#5e6149]">
+                    <IconRadar className="h-3 w-3 text-[#35d399] animate-[spin_8s_linear_infinite]" />
+                    VECTOR
+                  </span>
+                  <span className="text-lg font-bold tabular-nums text-[#f2efe6] leading-none">
+                    <DynamicPercent value={percentReadout} />
+                    <span className="ml-0.5 text-[11px] font-medium text-[#8b8f6b]">%</span>
+                  </span>
+                </div>
+
+                <div className="relative mt-3 h-[3px] w-full overflow-hidden rounded-full bg-white/[0.06]">
+                  <motion.div
+                    style={{ width: spineHeight }}
+                    className="h-full rounded-full bg-gradient-to-r from-[#35d399] to-[#fbbf24]"
+                  />
+                </div>
+
+                {/* Quarter ticks */}
+                <div aria-hidden className="mt-1.5 flex justify-between font-mono text-[9px] tracking-widest text-[#3f4335]">
+                  <span>0</span>
+                  <span>25</span>
+                  <span>50</span>
+                  <span>75</span>
+                  <span>100</span>
+                </div>
               </div>
-              <div className="w-16 h-1 rounded-full bg-white/[0.05] overflow-hidden">
-                <motion.div
-                  style={{ width: spineHeight }}
-                  className="h-full bg-gradient-to-r from-[#34d399] to-[#fbbf24]"
-                />
+            </header>
+
+            {/* ── TIMELINE TRACK ── */}
+            <div className="relative w-full" ref={trackRef}>
+              {/* Inactive rail */}
+              <div className="absolute left-4 md:left-1/2 top-8 bottom-8 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-white/[0.07] to-transparent" />
+
+              {/* Active spine */}
+              <motion.div
+                style={{ height: spineHeight }}
+                className="absolute left-4 md:left-1/2 top-8 w-px -translate-x-1/2 origin-top bg-gradient-to-b from-[#35d399]/70 via-[#35d399] to-[#fbbf24] z-10"
+              />
+
+              {/* Tracer head */}
+              <motion.div
+                style={{ top: spineHeight }}
+                className="absolute left-4 md:left-1/2 mt-8 -translate-x-1/2 z-30"
+              >
+                <span className="absolute -inset-2 rounded-full bg-[#35d399]/15 blur-[6px]" />
+                <span className="relative block h-1.5 w-1.5 rotate-45 bg-[#35d399] shadow-[0_0_10px_2px_rgba(53,211,153,0.45)]" />
+              </motion.div>
+
+              <div className="flex flex-col py-8">
+                {EVENTS.map((event, index) => (
+                  <TimelineSpotlightItem
+                    key={event.id}
+                    event={event}
+                    index={index}
+                  />
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Timeline Center Track Area */}
-          <div className="relative w-full" ref={trackRef}>
-            {/* Inactive Background Rail */}
-            <div className="absolute left-4 md:left-1/2 top-6 bottom-6 w-[1px] -translate-x-1/2 bg-white/[0.05]" />
-
-            {/* Glowing Active Dynamic Spine */}
-            <motion.div
-              style={{ height: spineHeight }}
-              className="absolute left-4 md:left-1/2 top-6 w-[1px] -translate-x-1/2 bg-gradient-to-b from-[#34d399] via-[#34d399] to-[#fbbf24] origin-top z-10"
-            />
-
-            {/* Tracer Bead Tracking the Scroll Head */}
-            <motion.div
-              style={{ top: spineHeight }}
-              className="absolute left-4 md:left-1/2 -translate-x-1/2 mt-6 z-30"
-            >
-              <div className="w-3 h-1.5 bg-[#34d399] rounded-sm shadow-[0_0_8px_#34d399]" />
-            </motion.div>
-
-            {/* Stream of Spotlight Milestones */}
-            <div className="flex flex-col py-6">
-              {EVENTS.map((event, index) => (
-                <TimelineSpotlightItem
-                  key={event.id}
-                  event={event}
-                  index={index}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Footnote Notice */}
-          <div className="mt-4 pt-5 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[10px] text-[#5e6149]">
-            <p className="max-w-xl leading-relaxed">
-              <span className="font-bold text-[#8b8f6b]">NOTE:</span> Research
-              papers published under institutional review at MIT Manipal. Access
-              full preprints via internal dossier or comms uplink.
-            </p>
-            <div className="flex items-center gap-2 tracking-widest uppercase">
-              <span>SEC-LEVEL: UNCLASSIFIED</span>
-              <span className="w-1.5 h-1.5 rounded-sm bg-[#34d399]" />
-            </div>
+            {/* ── FOOTNOTE ── */}
+            <footer className="mt-2 pt-6 border-t border-white/[0.06] flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="max-w-xl font-mono text-[10px] leading-relaxed text-[#5e6149]">
+                <span className="text-[#8b8f6b]">Note —</span> Papers published
+                under institutional review at MIT Manipal. Full preprints are
+                available through the internal dossier or on request.
+              </p>
+              <div className="flex shrink-0 items-center gap-2 rounded border border-[#35d399]/20 bg-[#35d399]/[0.04] px-2.5 py-1 font-mono text-[9px] tracking-[0.18em] text-[#8b8f6b]">
+                <span className="h-1 w-1 rounded-full bg-[#35d399]" />
+                SEC-LEVEL · UNCLASSIFIED
+              </div>
+            </footer>
           </div>
         </div>
       </motion.section>

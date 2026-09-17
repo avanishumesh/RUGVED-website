@@ -19,6 +19,7 @@ export function DefenseBackground() {
           --hud: #35d399;
           --amber: #fbbf24;
           --ember: #ff5a3c;
+          --sweep: 3.8s;
         }
 
         .hero-wrapper {
@@ -33,8 +34,10 @@ export function DefenseBackground() {
         .hero-wrapper svg { width: 100%; height: 100%; display: block; }
 
         /* ── DAY / NIGHT CROSSFADE PRIMITIVES ───────────────────── */
-        .n-sky, .n-ember, .n-haze, .n-grade { transition: opacity var(--td) var(--tt); }
-        .d-sky, .d-haze, .d-grade, .d-bloom, .d-cloud, .d-bird { transition: opacity var(--td) var(--tt); }
+        .n-sky, .n-ember, .n-haze, .n-grade,
+        .d-sky, .d-haze, .d-grade, .d-bloom, .d-cloud, .d-bird {
+          transition: opacity var(--td) var(--tt);
+        }
 
         .n-sky   { opacity: 1; }    .light-mode .n-sky   { opacity: 0; }
         .n-ember { opacity: 0.55; } .light-mode .n-ember { opacity: 0; }
@@ -89,11 +92,17 @@ export function DefenseBackground() {
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* ── TERRAIN: ATMOSPHERIC PERSPECTIVE LADDER ────────────── */
-        .t-bg, .t-mg, .t-fg, .t-base { transition: fill var(--td) var(--tt); }
-        .t-bg   { fill: #0f2a23; } .light-mode .t-bg   { fill: #f0b78a; }
-        .t-mg   { fill: #0a1a15; } .light-mode .t-mg   { fill: #dd8f60; }
-        .t-fg   { fill: #06120e; } .light-mode .t-fg   { fill: #bd6440; }
-        .t-base { fill: #020706; } .light-mode .t-base { fill: #8b4230; }
+        /* stroke matches fill so tiled copies join without a hairline seam */
+        .t-bg, .t-mg, .t-fg {
+          stroke-width: 1;
+          transition: fill var(--td) var(--tt), stroke var(--td) var(--tt);
+        }
+        .t-bg { fill: #0f2a23; stroke: #0f2a23; }
+        .t-mg { fill: #0a1a15; stroke: #0a1a15; }
+        .t-fg { fill: #06120e; stroke: #06120e; }
+        .light-mode .t-bg { fill: #f0b78a; stroke: #f0b78a; }
+        .light-mode .t-mg { fill: #dd8f60; stroke: #dd8f60; }
+        .light-mode .t-fg { fill: #bd6440; stroke: #bd6440; }
 
         /* Rim light along every crest — moonlight at night, sunlight by day */
         .crest {
@@ -164,21 +173,33 @@ export function DefenseBackground() {
         }
         .light-mode .hud { fill: #4a2411; opacity: 0.6; }
 
-        /* ── GROUND PENETRATING RADAR ───────────────────────────── */
-        .gpr {
+        /* ── SUBSURFACE RADAR — localised survey box under the UGV ─ */
+        .gpr-grid {
           stroke: var(--hud);
-          opacity: 0.42;
+          opacity: 0.1;
           transition: stroke var(--td) var(--tt), opacity var(--td) var(--tt);
         }
-        .gpr text { fill: var(--hud); transition: fill var(--td) var(--tt); }
-        .gpr-pulse {
-          stroke: var(--hud);
-          opacity: 0.38;
-          transition: stroke var(--td) var(--tt), opacity var(--td) var(--tt);
+        .gpr-pulse { stroke: var(--hud); transition: stroke var(--td) var(--tt); }
+        .gpr-target { stroke: var(--hud); transition: stroke var(--td) var(--tt); }
+        .gpr-target text { fill: var(--hud); transition: fill var(--td) var(--tt); }
+
+        .light-mode .gpr-grid        { stroke: #96481f; opacity: 0.14; }
+        .light-mode .gpr-pulse       { stroke: #96481f; }
+        .light-mode .gpr-target      { stroke: #7a3311; }
+        .light-mode .gpr-target text { fill: #54250b; }
+
+        /* A return only shows while the wavefront is passing over it */
+        @keyframes gpr-return {
+          0%   { opacity: 0; }
+          4%   { opacity: 0.6; }
+          12%  { opacity: 0.4; }
+          40%  { opacity: 0; }
+          100% { opacity: 0; }
         }
-        .light-mode .gpr       { stroke: #7a3311; opacity: 0.4; }
-        .light-mode .gpr text  { fill: #542307; }
-        .light-mode .gpr-pulse { stroke: #96481f; opacity: 0.36; }
+        .gpr-target { opacity: 0; animation: gpr-return var(--sweep) linear infinite; }
+        .ret-1 { animation-delay: 0.70s; }
+        .ret-2 { animation-delay: 2.20s; }
+        .ret-3 { animation-delay: 2.66s; }
 
         /* ── PARALLAX ───────────────────────────────────────────── */
         @keyframes drift { to { transform: translate3d(-1920px, 0, 0); } }
@@ -202,11 +223,15 @@ export function DefenseBackground() {
         .bob-b { animation: bob-b 6.5s ease-in-out infinite; }
         .bob-c { animation: bob-c 4.8s ease-in-out infinite; }
 
-        @keyframes blink   { 50% { opacity: 0.65; } }
-        @keyframes strobe  { 0%, 92%, 100% { opacity: 0.1; } 96% { opacity: 0.75; } }
-        .beacon        { opacity: 0.15; animation: blink 2s infinite; }
-        .beacon-amber  { opacity: 0.15; animation: blink 2.3s infinite; }
-        .beacon-ember  { animation: strobe 3.6s infinite; }
+        @keyframes blink  { 50% { opacity: 0.65; } }
+        @keyframes strobe { 0%, 92%, 100% { opacity: 0.1; } 96% { opacity: 0.75; } }
+        .beacon       { opacity: 0.15; animation: blink 2s infinite; }
+        .beacon-amber { opacity: 0.15; animation: blink 2.3s infinite; }
+        .beacon-ember { animation: strobe 3.6s infinite; }
+
+        /* UGV emitter ticks once per sweep, in time with the wavefront */
+        @keyframes emit { 0%, 7% { opacity: 0.7; } 20%, 100% { opacity: 0.1; } }
+        .emitter { animation: emit var(--sweep) linear infinite; }
 
         @keyframes sat { to { transform: translate3d(-2200px, 0, 0); } }
         .sat-drift { animation: sat 150s linear infinite; }
@@ -255,7 +280,8 @@ export function DefenseBackground() {
         .light-mode .scanlines { opacity: 0.06; }
 
         @media (prefers-reduced-motion: reduce) {
-          .hero-wrapper *, .hero-wrapper *::before { animation: none !important; }
+          .hero-wrapper * { animation: none !important; }
+          .gpr-target { opacity: 0.35 !important; }
         }
       `}</style>
 
@@ -278,7 +304,7 @@ export function DefenseBackground() {
             </linearGradient>
 
             <radialGradient id="emberHorizon" cx="50%" cy="100%" r="62%">
-              <stop offset="0%" stopColor="#FF7A2E" stopOpacity="0.30" />
+              <stop offset="0%" stopColor="#FF7A2E" stopOpacity="0.3" />
               <stop offset="55%" stopColor="#C2431A" stopOpacity="0.09" />
               <stop offset="100%" stopColor="#C2431A" stopOpacity="0" />
             </radialGradient>
@@ -366,37 +392,39 @@ export function DefenseBackground() {
               <stop offset="100%" stopColor="#FFB347" stopOpacity="0" />
             </linearGradient>
 
-            {/* ── TERRAIN SILHOUETTES ── */}
+            {/* ── RIDGELINES ──────────────────────────────────────
+                Each path starts and ends at the same height AND the
+                same tangent, so tile N's tail meets tile N+1's head
+                with no step and no kink. The join sits in a trough,
+                where it is hardest to read.                        */}
             <path
               id="ridgeBg"
-              d="M-10,560 C160,470 320,430 480,460 C640,490 760,380 940,360 C1120,340 1260,430 1420,410 C1580,390 1740,460 1930,480"
+              d="M0,545 C170,552 330,466 500,442 C670,418 790,338 950,350 C1110,362 1250,438 1420,416 C1590,394 1750,538 1920,545"
             />
             <path
               id="ridgeMg"
-              d="M-10,700 C180,640 340,680 500,650 C660,620 780,700 950,670 C1120,640 1260,700 1430,680 C1600,660 1760,710 1930,690"
+              d="M0,682 C170,690 330,646 500,636 C670,626 790,700 950,684 C1110,668 1250,704 1420,690 C1590,676 1750,674 1920,682"
             />
             <path
               id="ridgeFg"
-              d="M-10,830 C160,780 300,820 460,790 C620,760 740,830 900,800 C1060,770 1180,830 1340,800 C1500,770 1660,820 1930,800"
+              d="M0,814 C160,822 300,800 460,786 C620,772 740,824 900,808 C1060,792 1180,826 1340,806 C1500,786 1760,806 1920,814"
             />
 
             <path
               id="massBg"
               className="t-bg"
-              d="M-10,560 C160,470 320,430 480,460 C640,490 760,380 940,360 C1120,340 1260,430 1420,410 C1580,390 1740,460 1930,480 L1930,1080 L-10,1080 Z"
+              d="M0,545 C170,552 330,466 500,442 C670,418 790,338 950,350 C1110,362 1250,438 1420,416 C1590,394 1750,538 1920,545 L1920,1080 L0,1080 Z"
             />
             <path
               id="massMg"
               className="t-mg"
-              d="M-10,700 C180,640 340,680 500,650 C660,620 780,700 950,670 C1120,640 1260,700 1430,680 C1600,660 1760,710 1930,690 L1930,1080 L-10,1080 Z"
+              d="M0,682 C170,690 330,646 500,636 C670,626 790,700 950,684 C1110,668 1250,704 1420,690 C1590,676 1750,674 1920,682 L1920,1080 L0,1080 Z"
             />
-            <g id="massFg">
-              <rect className="t-base" x="-10" y="830" width="1940" height="250" />
-              <path
-                className="t-fg"
-                d="M-10,830 C160,780 300,820 460,790 C620,760 740,830 900,800 C1060,770 1180,830 1340,800 C1500,770 1660,820 1930,800 L1930,1080 L-10,1080 Z"
-              />
-            </g>
+            <path
+              id="massFg"
+              className="t-fg"
+              d="M0,814 C160,822 300,800 460,786 C620,772 740,824 900,808 C1060,792 1180,826 1340,806 C1500,786 1760,806 1920,814 L1920,1080 L0,1080 Z"
+            />
 
             {/* ── RELAY MAST ── */}
             <g id="mast" className="tower">
@@ -433,43 +461,23 @@ export function DefenseBackground() {
               <text className="hud" x="27" y="-9">UAV·02 FLIR</text>
             </g>
 
-            {/* ── BIRD (day only, 2D-art detail) ── */}
+            {/* ── BIRD (day only) ── */}
             <path id="bird" d="M0,0 c4,-5 8,-5 11,0 c3,-5 7,-5 11,0" fill="none" stroke="#7A3C22" strokeWidth="1.6" strokeLinecap="round" />
 
-            {/* ── SUBSURFACE SCAN READOUT ── */}
-            <g id="scanFeed" fill="none" strokeWidth="2.2" fontFamily="ui-monospace, monospace" fontSize="12">
-              <line x1="0" y1="884" x2="1920" y2="884" strokeWidth="1.2" strokeDasharray="5 7" opacity="0.45" />
-              <line x1="0" y1="964" x2="1920" y2="964" strokeWidth="1.2" strokeDasharray="5 7" opacity="0.45" />
-              <line x1="0" y1="1044" x2="1920" y2="1044" strokeWidth="1.2" strokeDasharray="5 7" opacity="0.45" />
+            {/* ── SURVEY WINDOW ──────────────────────────────────
+                The subsurface readout is confined to a band around
+                the vehicle and feathered at both ends, so it reads
+                as the UGV's own sensor footprint rather than a
+                full-width overlay.                                */}
+            <linearGradient id="gprFade" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#000000" />
+              <stop offset="14%" stopColor="#ffffff" />
+              <stop offset="76%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#000000" />
+            </linearGradient>
 
-              <rect x="250" y="912" width="160" height="70" />
-              <line x1="250" y1="912" x2="410" y2="982" />
-              <line x1="410" y1="912" x2="250" y2="982" />
-              <text x="250" y="902" stroke="none">TARGET·01 BURIED VAULT</text>
-
-              <rect x="700" y="940" width="350" height="26" />
-              <line x1="770" y1="940" x2="770" y2="966" />
-              <line x1="840" y1="940" x2="840" y2="966" />
-              <line x1="910" y1="940" x2="910" y2="966" />
-              <line x1="980" y1="940" x2="980" y2="966" />
-              <text x="700" y="930" stroke="none">SCAN HARDENED PIPELINE</text>
-
-              <rect x="1350" y="892" width="220" height="118" />
-              <rect x="1372" y="912" width="176" height="78" />
-              <line x1="1460" y1="892" x2="1460" y2="1010" />
-              <text x="1350" y="882" stroke="none">GRID NODE SUBSURFACE</text>
-            </g>
-
-            <clipPath id="groundClip">
-              <rect x="0" y="848" width="1920" height="232" />
-            </clipPath>
-
-            <mask id="scanReveal">
-              <rect x="0" y="0" width="1920" height="1080" fill="black" />
-              <circle cx="480" cy="815" r="0" fill="white">
-                <animate attributeName="r" values="0;460" dur="3.6s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.9;0" dur="3.6s" repeatCount="indefinite" />
-              </circle>
+            <mask id="gprZone" maskUnits="userSpaceOnUse" x="130" y="846" width="660" height="234">
+              <rect x="130" y="846" width="660" height="234" fill="url(#gprFade)" />
             </mask>
           </defs>
 
@@ -552,13 +560,13 @@ export function DefenseBackground() {
 
           {/* RELAY MASTS */}
           <g className="scroll-towers">
-            <g transform="translate(430,400)"><use href="#mast" /></g>
-            <g transform="translate(1180,350)"><use href="#mast" /></g>
-            <g transform="translate(2350,400)"><use href="#mast" /></g>
-            <g transform="translate(3100,350)"><use href="#mast" /></g>
+            <g transform="translate(430,392)"><use href="#mast" /></g>
+            <g transform="translate(1180,344)"><use href="#mast" /></g>
+            <g transform="translate(2350,392)"><use href="#mast" /></g>
+            <g transform="translate(3100,344)"><use href="#mast" /></g>
           </g>
 
-          {/* LAYER 1 — FAR DUNES */}
+          {/* LAYER 1 — FAR RANGE */}
           <g className="scroll-bg">
             <use href="#massBg" x="0" />
             <use href="#massBg" x="1920" />
@@ -566,8 +574,8 @@ export function DefenseBackground() {
             <use href="#ridgeBg" className="crest" x="1920" strokeWidth="4" />
           </g>
 
-          <rect className="n-haze" x="0" y="400" width="1920" height="250" fill="url(#hazeNight)" />
-          <rect className="d-haze" x="0" y="400" width="1920" height="250" fill="url(#hazeDay)" />
+          <rect className="n-haze" x="0" y="404" width="1920" height="250" fill="url(#hazeNight)" />
+          <rect className="d-haze" x="0" y="404" width="1920" height="250" fill="url(#hazeDay)" />
 
           {/* DRONE PATROL */}
           <g className="scroll-drones">
@@ -581,7 +589,7 @@ export function DefenseBackground() {
             <g transform="translate(3400,376)"><use href="#uavFlir" className="bob-a" /></g>
           </g>
 
-          {/* LAYER 2 — MID DUNES */}
+          {/* LAYER 2 — MID RANGE */}
           <g className="scroll-mg">
             <use href="#massMg" x="0" />
             <use href="#massMg" x="1920" />
@@ -593,10 +601,10 @@ export function DefenseBackground() {
             <ellipse className="scoop" cx="3280" cy="762" rx="260" ry="58" />
           </g>
 
-          <rect className="n-haze" x="0" y="596" width="1920" height="220" fill="url(#hazeNight)" />
-          <rect className="d-haze" x="0" y="596" width="1920" height="220" fill="url(#hazeDay)" />
+          <rect className="n-haze" x="0" y="600" width="1920" height="220" fill="url(#hazeNight)" />
+          <rect className="d-haze" x="0" y="600" width="1920" height="220" fill="url(#hazeDay)" />
 
-          {/* LAYER 3 — NEAR DUNES */}
+          {/* LAYER 3 — NEAR RANGE */}
           <g className="scroll-fg">
             <use href="#massFg" x="0" />
             <use href="#massFg" x="1920" />
@@ -612,19 +620,48 @@ export function DefenseBackground() {
           <rect className="n-grade" x="0" y="700" width="1920" height="380" fill="url(#gradeNight)" />
           <rect className="d-grade" x="0" y="700" width="1920" height="380" fill="url(#gradeDay)" />
 
-          {/* SUBSURFACE SCAN */}
-          <g clipPath="url(#groundClip)">
-            <g className="gpr" mask="url(#scanReveal)">
-              <use href="#scanFeed" />
+          {/* ── SUBSURFACE RADAR ─────────────────────────────────
+              One wavefront leaves the UGV every 3.8s and reaches
+              the edge of the survey window. Each buried structure
+              holds a return only while the front is over it.     */}
+          <g mask="url(#gprZone)">
+            <g className="gpr-grid" fill="none" strokeWidth="1" strokeDasharray="4 8">
+              <line x1="130" y1="886" x2="790" y2="886" />
+              <line x1="130" y1="966" x2="790" y2="966" />
+              <line x1="130" y1="1046" x2="790" y2="1046" />
             </g>
+
             <circle className="gpr-pulse" cx="480" cy="815" r="0" fill="none">
-              <animate attributeName="r" values="0;460" dur="3.6s" repeatCount="indefinite" />
-              <animate attributeName="stroke-width" values="4;1" dur="3.6s" repeatCount="indefinite" />
+              <animate attributeName="r" values="0;460" dur="3.8s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="3.5;0.7" dur="3.8s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.4;0.22;0" dur="3.8s" repeatCount="indefinite" />
             </circle>
-            <circle className="gpr-pulse" cx="480" cy="815" r="0" fill="none">
-              <animate attributeName="r" values="0;460" begin="1.8s" dur="3.6s" repeatCount="indefinite" />
-              <animate attributeName="stroke-width" values="4;1" begin="1.8s" dur="3.6s" repeatCount="indefinite" />
-            </circle>
+
+            {/* T1 — shallow conduit, directly beneath the vehicle */}
+            <g className="gpr-target ret-1" fill="none" strokeWidth="1.6" fontFamily="ui-monospace, monospace" fontSize="10" letterSpacing="1.2">
+              <rect x="400" y="892" width="180" height="18" />
+              <line x1="445" y1="892" x2="445" y2="910" strokeWidth="0.9" />
+              <line x1="490" y1="892" x2="490" y2="910" strokeWidth="0.9" />
+              <line x1="535" y1="892" x2="535" y2="910" strokeWidth="0.9" />
+              <text x="400" y="884" stroke="none">T1 CONDUIT · 1.2M</text>
+            </g>
+
+            {/* T2 — reinforced vault, off to the left */}
+            <g className="gpr-target ret-2" fill="none" strokeWidth="1.6" fontFamily="ui-monospace, monospace" fontSize="10" letterSpacing="1.2">
+              <rect x="205" y="938" width="130" height="56" />
+              <line x1="205" y1="938" x2="335" y2="994" strokeWidth="0.9" />
+              <line x1="335" y1="938" x2="205" y2="994" strokeWidth="0.9" />
+              <text x="205" y="930" stroke="none">T2 VAULT · 3.4M</text>
+            </g>
+
+            {/* T3 — metallic cluster, off to the right */}
+            <g className="gpr-target ret-3" fill="none" strokeWidth="1.6" fontFamily="ui-monospace, monospace" fontSize="10" letterSpacing="1.2">
+              <circle cx="690" cy="1022" r="11" />
+              <circle cx="722" cy="1040" r="7" />
+              <circle cx="664" cy="1046" r="6" />
+              <rect x="640" y="1000" width="110" height="62" strokeWidth="0.9" strokeDasharray="3 5" />
+              <text x="640" y="992" stroke="none">T3 CLUSTER · 4.8M</text>
+            </g>
           </g>
 
           {/* UGV — WALRUS 2.0 */}
@@ -646,6 +683,10 @@ export function DefenseBackground() {
             <polygon className="hull-3" points="-35,-22 5,-22 25,-14 -30,-14" />
             <path className="rim-light" d="M-35,-22.5 L5,-22.5 L25,-14.5" strokeWidth="1.1" />
 
+            {/* GPR emitter array — ticks with each wavefront */}
+            <rect className="hull-1" x="-20" y="8" width="34" height="5" rx="1" />
+            <rect className="emitter" x="-20" y="8" width="34" height="5" rx="1" fill="var(--hud)" />
+
             <rect className="hull-1" x="-15" y="-35" width="20" height="10" />
             <circle className="hull-3" cx="-5" cy="-35" r="7" />
             <path className="rim-light" d="M-11,-38.5 A7,7 0 0 1 -0.5,-39.5" strokeWidth="1" />
@@ -663,7 +704,7 @@ export function DefenseBackground() {
               </g>
             ))}
 
-            <text className="hud" x="-40" y="-56">WALRUS 2.0 · AUTO-SLAM</text>
+            <text className="hud" x="-40" y="-56">WALRUS 2.0 · GPR SWEEP</text>
           </g>
 
           {/* DAY BLOOM — final warm light wash */}
