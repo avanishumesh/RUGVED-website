@@ -15,9 +15,9 @@ export function SiteDock() {
     { title: "Home", icon: <IconHome className="h-full w-full text-[#c2b8a3]" />, href: "/" },
     { title: "Projects", icon: <IconTank className="h-full w-full text-[#c2b8a3]" />, href: "/projects" },
     { title: "Subsystems", icon: <IconCpu className="h-full w-full text-[#c2b8a3]" />, href: "/subsystems" },
-    { title: "Team", icon: <IconUsersGroup className="h-full w-full text-[#c2b8a3]" />, href: "/team" },
+   
     { title: "Contact", icon: <IconMail className="h-full w-full text-[#c2b8a3]" />, href: "/contact" },
-    { title: "GitHub", icon: <IconBrandGithub className="h-full w-full text-[#c2b8a3]" />, href: "https://github.com/RUGVED-Systems-MIT" },
+    
     { title: "Instagram", icon: <IconBrandInstagram className="h-full w-full text-[#c2b8a3]" />, href: "https://www.instagram.com/rugved_systems" },
   ];
   return (

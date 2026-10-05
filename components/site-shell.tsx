@@ -31,9 +31,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const navLinks = [
+    {label: "Home", href : "/"},
     { label: "ARSENAL", href: "/projects" },
     { label: "SUBSYSTEMS", href: "/subsystems" },
-    { label: "PERSONNEL", href: "/team" },
+
     { label: "COMMS", href: "/contact" },
   ];
 

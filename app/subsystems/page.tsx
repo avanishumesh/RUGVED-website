@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import TacticalCard from "@/components/ui/TacticalCard";
 import {
   IconShieldCheck,
   IconSettings,
@@ -8,349 +7,265 @@ import {
   IconSearch,
   IconRobot,
   IconCpu,
-  IconMinus,
-  IconArrowRight,
-  IconCheck,
-  IconTerminal,
+  IconCamera,
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTheme } from "@/components/theme-provider";
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────────────────────────────────────── */
 interface Division {
   code: string;
-  short: string;
   title: string;
   category: string;
   icon: React.ComponentType<{ className?: string }>;
   leadRole: string;
   summary: string;
-  responsibilities: string[];
-  techStack: string[];
   deliverables: string[];
 }
 
 const DIVISIONS: Division[] = [
   {
     code: "S-01",
-    short: "TB",
     title: "The Board",
-    category: "COMMAND // STRATEGY",
+    category: "Command & Strategy",
     icon: IconShieldCheck,
     leadRole: "Team Lead & Technical Directors",
     summary:
-      "The strategic apex of RUGVED Systems. Oversees inter-division synchronization, long-term technical roadmaps, competition targets, defence expo representation, and faculty/advisory liaison.",
-    responsibilities: [
-      "Strategic mission alignment and competition planning",
-      "Resource allocation, safety compliance, and defence standards",
-      "Final sign-off on hardware revisions and patent submissions",
-    ],
-    techStack: ["Mission Planner", "Notion", "Git Project Management", "Defence Protocols"],
+      "The strategic apex of RUGVED Systems. Oversees inter-division synchronization, long-term technical roadmaps, competition targets, defence expo representation, and faculty advisory liaison.",
     deliverables: ["Annual Strategic Roadmap", "Defence Expo Dossiers", "System Architecture Specs"],
   },
   {
-    code: "S-02",
-    short: "MG",
-    title: "Management & Operations",
-    category: "OPERATIONS // LOGISTICS",
-    icon: IconSettings,
-    leadRole: "Operations & PR Leads",
-    summary:
-      "Controls timelines, procurement chains, industry sponsorships, financial budgeting, and public outreach to keep our engineering cycles frictionless.",
-    responsibilities: [
-      "Component procurement & inventory supply-chain management",
-      "Industrial sponsorship acquisition and corporate partnerships",
-      "Media, public relations, and institutional documentation",
-    ],
-    techStack: ["Supply Chain Logistics", "Sponsor CRM", "Financial Modeling", "PR & Outreach"],
-    deliverables: ["Sponsorship Pitches", "Budget Audits", "Media Campaigns"],
-  },
-  {
-    code: "S-03",
-    short: "EL",
-    title: "Electronics & Embedded Hardware",
-    category: "HARDWARE // EMBEDDED",
-    icon: IconCircuitCapacitor,
-    leadRole: "Electronics Head & Firmware Engineers",
-    summary:
-      "The nervous system and power backbone of our robotic platforms. Engineers custom multi-layer PCBs, high-current power distribution, CAN bus telemetry, and real-time microcontroller firmware.",
-    responsibilities: [
-      "Multi-layer high-speed PCB schematic & layout design",
-      "48V LiFePO4 battery management system (BMS) integration",
-      "Sensor interface routing (CAN 2.0B, RS485, UART, SPI, I2C)",
-      "FPGA gunshot acoustic sensor signal processing",
-    ],
-    techStack: ["Altium Designer", "STM32 / ARM Cortex", "Xilinx Vivado", "CANoe", "KiCad"],
-    deliverables: ["Custom Motor Drivers", "FPGA Acoustic Board", "Redundant BMS Module"],
-  },
-  {
     code: "S-04",
-    short: "RD",
-    title: "Research & Applied Innovation",
-    category: "SCIENCE // INNOVATION",
+    title: "Research",
+    category: "Science & Innovation",
     icon: IconSearch,
     leadRole: "Research Director & Paper Authors",
     summary:
       "Conducts cutting-edge scientific exploration into robotic state estimation, terrain classification, and novel sensor fusion algorithms, converting lab breakthroughs into peer-reviewed papers and patents.",
-    responsibilities: [
-      "Literature review of state-of-the-art military robotics",
-      "Authoring and publishing papers in IEEE, ICRA, and Elsevier",
-      "Drafting intellectual property patents for proprietary navigation AI",
-    ],
-    techStack: ["LaTeX", "MATLAB", "Python", "IEEE Xplore", "Gazebo Sim"],
     deliverables: ["Peer-Reviewed Papers", "Patent Filings", "Simulation Benchmarks"],
   },
   {
     code: "S-05",
-    short: "AR",
-    title: "AI & Autonomous Robotics",
-    category: "SOFTWARE // AUTONOMY",
+    title: "Ai and Robotics",
+    category: "Software & Autonomy",
     icon: IconRobot,
     leadRole: "Autonomy & Computer Vision Leads",
     summary:
       "The cognitive brain of our autonomous ground vehicles. Implements 3D SLAM, obstacle segmentation, deep learning perception, edge inference on NVIDIA Jetson, and reinforcement learning pathfinding.",
-    responsibilities: [
-      "ROS2 Humble real-time node architecture & sensor fusion",
-      "3D LiDAR SLAM (RTAB-Map / Fast-LIO) and point cloud filtering",
-      "Terrain trafficability deep neural networks (YOLOv10 / PyTorch)",
-      "Dynamic obstacle avoidance and self-recovery behaviors",
-    ],
-    techStack: ["ROS2 Humble", "NVIDIA Jetson / TensorRT", "PyTorch", "OpenCV", "C++20", "CUDA"],
     deliverables: ["Autonomous Nav Stack", "Real-Time 3D SLAM", "Computer Vision Models"],
   },
   {
+    code: "S-02",
+    title: "Management",
+    category: "Operations & Logistics",
+    icon: IconSettings,
+    leadRole: "Operations & PR Leads",
+    summary:
+      "Controls timelines, procurement chains, industry sponsorships, financial budgeting, and public outreach to keep our engineering cycles frictionless.",
+    deliverables: ["Sponsorship Pitches", "Budget Audits", "Media Campaigns"],
+  },
+  {
+    code: "S-03",
+    title: "Electronics",
+    category: "Hardware & Embedded",
+    icon: IconCircuitCapacitor,
+    leadRole: "Electronics Head & Firmware Engineers",
+    summary:
+      "The nervous system and power backbone of our robotic platforms. Engineers custom multi-layer PCBs, high-current power distribution, CAN bus telemetry, and real-time microcontroller firmware.",
+    deliverables: ["Custom Motor Drivers", "FPGA Acoustic Board", "Redundant BMS Module"],
+  },
+  {
     code: "S-06",
-    short: "ME",
-    title: "Mechanical & Structural Design",
-    category: "ENGINEERING // CHASSIS",
+    title: "Mechanical",
+    category: "Engineering & Chassis",
     icon: IconCpu,
     leadRole: "Mechanical Lead & CAD Specialists",
     summary:
       "Engineers the physical armor, high-torque dual-track drivetrains, modular payload mounts, and environmental sealing to ensure our platforms survive extreme terrain and heavy impact.",
-    responsibilities: [
-      "3D parametric CAD modeling in SolidWorks & Autodesk Inventor",
-      "Finite Element Analysis (FEA) for structural stress and shock load",
-      "CNC milling, waterjet cutting, and precision TIG welding",
-      "IP67 environmental seal design for water and dust ingress",
-    ],
-    techStack: ["SolidWorks", "ANSYS FEA", "Fusion 360", "CNC Milling", "3D Printing"],
     deliverables: ["All-Terrain Track Assembly", "Armored Chassis", "Modular Payload Bays"],
   },
 ];
 
-function SectionLabel({ k, label }: { k: string; label: string }) {
-  return (
-    <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.32em] text-[#8b8f6b]">
-      <span className="inline-flex items-center gap-1.5 rounded border border-[#8b8f6b]/20 bg-[#8b8f6b]/10 px-2.5 py-1 text-[#c2b8a3]">
-        <IconMinus className="h-3 w-3" /> {k}
-      </span>
-      <span className="h-px w-12 bg-[#8b8f6b]/20 hidden sm:block" />
-      <span className="font-bold tracking-[0.24em] text-[#e8e6dc]">{label}</span>
-    </div>
-  );
-}
+/* ─────────────────────────────────────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────────────────────────────────────── */
 
 export default function SubsystemsPage() {
-  const [activeCode, setActiveCode] = useState<string>("S-05");
+  const [activeCode, setActiveCode] = useState<string>("S-01");
   const activeDiv = DIVISIONS.find((d) => d.code === activeCode) || DIVISIONS[0];
   const ActiveIcon = activeDiv.icon;
+  
+  const { theme } = useTheme();
+  // Fallback to dark if undefined
+  const isDark = theme === "dark" || !theme;
+
+  // Theme configuration dictionaries
+  const colors = {
+    bg: isDark ? "bg-[#0a0c0a]" : "bg-[#f2efe9]",
+    textPrimary: isDark ? "text-[#e2e8e0]" : "text-[#2d2a25]",
+    textSecondary: isDark ? "text-[#8b9984]" : "text-[#7a7261]",
+    
+    // Layer 1 (Outer shell)
+    layer1Bg: isDark ? "bg-[#101410]" : "bg-[#e8e4db]",
+    layer1Border: isDark ? "border-[#1e261d]" : "border-[#d8d1c1]",
+    
+    // Layer 2 (Inner shell)
+    layer2Bg: isDark ? "bg-[#151a14]" : "bg-[#dfdacd]",
+    layer2Border: isDark ? "border-[#242d22]" : "border-[#c4bbac]",
+    
+    // Accents & Tabs
+    tabActiveBg: isDark ? "bg-[#1c241b]" : "bg-[#d1c9b6]",
+    tabActiveBorder: isDark ? "border-[#364534]" : "border-[#a3977c]",
+    tabInactiveHover: isDark ? "hover:bg-[#121711]" : "hover:bg-[#e3dec8]",
+    
+    // Deliverables tags
+    tagBg: isDark ? "bg-[#1a2119]" : "bg-[#d4cdbd]",
+    tagBorder: isDark ? "border-[#2d3a2c]" : "border-[#bfb7a4]",
+  };
 
   return (
-    <main className="mx-auto max-w-[1440px] px-6 pt-8 md:px-8 md:pt-10 space-y-12">
-      <SectionLabel k="05" label="SUBSYSTEMS ARCHITECTURE" />
+    <>
+      {/* ── GLOBAL FONT OVERRIDE: IBM PLEX SERIF ── */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+        html, body, * { font-family: 'IBM Plex Serif', serif; }
+        
+        /* Hide scrollbar for the horizontal tab row */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
 
-      {/* Hero Header with Background Ripple Integration */}
-      <div className="relative overflow-hidden rounded-2xl border border-[#c2b8a3]/15 bg-[#0e110e]/80 backdrop-blur-2xl p-8 md:p-12 shadow-2xl">
-        <div className="pointer-events-none absolute inset-0 opacity-25">
-         
-        </div>
-
-        <div className="relative z-10">
-          <div className="flex flex-wrap items-baseline justify-between gap-4">
-            <h1 className="font-mono text-[32px] font-black tracking-tight text-[#e8e6dc] md:text-[44px] leading-none">
-              SIX DIVISIONS // ONE MISSION
-            </h1>
-            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-bold text-emerald-300">
-              ● INTER-DIVISION HARMONY
+      <main className={`mx-auto max-w-[1360px] px-4 pt-6 pb-20 md:px-8 space-y-6 min-h-screen transition-colors duration-500 ${colors.bg}`}>
+        
+        {/* ── HEADER (Centered & Shifted Up) ── */}
+        <div className="flex flex-col items-center justify-center space-y-2 pt-2 pb-2">
+          <div className="flex items-center gap-3 tracking-[0.15em] uppercase text-[11px]">
+            <span className={`inline-flex items-center px-3 py-1 font-semibold border ${colors.layer1Bg} ${colors.textSecondary} ${colors.layer1Border}`}>
+              05
+            </span>
+            <span className={`font-semibold tracking-widest ${colors.textSecondary}`}>
+              Organization Structure
             </span>
           </div>
-
-          <p className="mt-4 max-w-[72ch] font-mono text-[13px] md:text-[14px] leading-relaxed text-[#8b8f6b]">
-            Every RUGVED robotic platform is born from seamless interdisciplinary coordination across 6 core technical divisions — from structural mechanical engineering to deep neural autonomy and real-time electronics.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className={`text-[42px] md:text-[56px] font-bold leading-none tracking-tight ${colors.textPrimary}`}>
+              SubSystems
+            </h1>
+          </motion.div>
         </div>
-      </div>
 
-      {/* Interactive Command Center: Division Switcher + Deep Inspector */}
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_1.3fr]">
-        {/* Left: Division Select Cards */}
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-          {DIVISIONS.map((d) => {
-            const Icon = d.icon;
-            const isSelected = d.code === activeCode;
-            return (
-              <button
-                key={d.code}
-                onClick={() => setActiveCode(d.code)}
-                className={`group flex items-center justify-between rounded-xl border p-4 text-left font-mono transition-all ${
-                  isSelected
-                    ? "border-emerald-500/60 bg-[#141a13] shadow-[0_0_24px_rgba(16,185,129,0.25)] scale-[1.01]"
-                    : "border-[#c2b8a3]/12 bg-[#0e120e]/80 hover:border-[#c2b8a3]/30 hover:bg-[#111611]"
-                }`}
-              >
-                <div className="flex items-center gap-3.5">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-lg border transition-colors ${
-                      isSelected
-                        ? "border-emerald-400 bg-emerald-500/20 text-emerald-300"
-                        : "border-[#c2b8a3]/20 bg-black/40 text-[#c2b8a3] group-hover:border-[#c2b8a3]/40"
-                    }`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] text-[#8b8f6b]">{d.code}</span>
-                      <span className="text-[10px] text-[#8b8f6b]/70">// {d.short}</span>
-                    </div>
-                    <div
-                      className={`text-[15px] font-bold tracking-wide transition-colors ${
-                        isSelected ? "text-[#f2efe6]" : "text-[#c2b8a3] group-hover:text-white"
-                      }`}
-                    >
-                      {d.title}
-                    </div>
-                  </div>
-                </div>
-
-                <IconArrowRight
-                  className={`h-4 w-4 transition-transform ${
-                    isSelected ? "text-emerald-400 translate-x-1" : "text-[#8b8f6b]/40"
+        {/* ── HORIZONTAL TAB ROW (Centered on Desktop) ── */}
+        <div className="relative">
+          <div className={`flex overflow-x-auto hide-scrollbar gap-2 pb-3 border-b md:justify-center ${colors.layer1Border}`}>
+            {DIVISIONS.map((d) => {
+              const isSelected = d.code === activeCode;
+              return (
+                <button
+                  key={d.code}
+                  onClick={() => setActiveCode(d.code)}
+                  className={`flex shrink-0 items-center gap-2.5 px-4 py-2.5 transition-all duration-300 border ${
+                    isSelected
+                      ? `${colors.tabActiveBg} ${colors.textPrimary} ${colors.tabActiveBorder}`
+                      : `border-transparent bg-transparent ${colors.textSecondary} ${colors.tabInactiveHover}`
                   }`}
-                />
-              </button>
-            );
-          })}
+                >
+                  <span className="text-[14px] font-medium tracking-wide">
+                    {d.title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Right: Active Division Dossier & Specs */}
+        {/* ── ACTIVE DIVISION DOSSIER (Layered Matte Design) ── */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeDiv.code}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className={`p-2.5 md:p-3.5 border ${colors.layer1Bg} ${colors.layer1Border}`}
           >
-            <TacticalCard
-              badge={activeDiv.category}
-              className="p-8 md:p-10 space-y-6 flex flex-col justify-between h-full"
-            >
-              <div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-300">
-                    <ActiveIcon className="h-6 w-6" />
+            {/* Inner Shell Layer */}
+            <div className={`border overflow-hidden flex flex-col ${colors.layer2Bg} ${colors.layer2Border}`}>
+              
+              {/* Header block */}
+              <div className={`p-6 md:p-8 border-b flex flex-col md:flex-row md:items-center justify-between gap-4 ${colors.layer2Border}`}>
+                <div className="flex items-center gap-5">
+                  <div className={`flex h-14 w-14 shrink-0 items-center justify-center border ${colors.layer1Bg} ${colors.textPrimary} ${colors.layer1Border}`}>
+                    <ActiveIcon className="h-7 w-7 opacity-80" />
                   </div>
                   <div>
-                    <div className="font-mono text-[11px] font-bold text-emerald-400">
-                      {activeDiv.code} • {activeDiv.leadRole}
+                    <div className={`text-[11px] tracking-widest uppercase mb-1 font-medium ${colors.textSecondary}`}>
+                      {activeDiv.code} / {activeDiv.leadRole}
                     </div>
-                    <h2 className="font-mono text-[26px] font-bold text-[#f2efe6] md:text-[30px]">
+                    <h2 className={`text-[28px] md:text-[36px] font-bold leading-none ${colors.textPrimary}`}>
                       {activeDiv.title}
                     </h2>
                   </div>
                 </div>
-
-                <p className="mt-4 font-mono text-[14px] leading-relaxed text-[#c2b8a3]/90">
-                  {activeDiv.summary}
-                </p>
-
-                {/* Core Responsibilities */}
-                <div className="mt-6 space-y-3">
-                  <div className="font-mono text-[11px] font-bold tracking-widest text-[#8b8f6b]">
-                    PRIMARY TECHNICAL CHARGE:
-                  </div>
-                  <ul className="space-y-2 font-mono text-[13px] text-[#e8e6dc]">
-                    {activeDiv.responsibilities.map((r, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <span className="text-emerald-400 font-bold mt-0.5">▸</span>
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Tech Stack Chips */}
-                <div className="mt-6 space-y-2.5">
-                  <div className="font-mono text-[11px] font-bold tracking-widest text-[#8b8f6b]">
-                    TOOLCHAIN &amp; FRAMEWORKS:
-                  </div>
-                  <div className="flex flex-wrap gap-2 font-mono text-[11px]">
-                    {activeDiv.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-lg border border-[#c2b8a3]/20 bg-black/40 px-3 py-1 text-[#c2b8a3]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                <div className={`px-4 py-2 text-[12px] border shrink-0 tracking-wide font-medium ${colors.layer1Bg} ${colors.textSecondary} ${colors.layer1Border}`}>
+                  {activeDiv.category}
                 </div>
               </div>
 
-              {/* Key Deliverables Footer */}
-              <div className="border-t border-[#c2b8a3]/12 pt-5">
-                <div className="font-mono text-[11px] font-bold tracking-widest text-[#8b8f6b] mb-2">
-                  KEY DIVISION DELIVERABLES:
+              {/* Grid Content: Image Left, Text Right */}
+              <div className="grid lg:grid-cols-[1.2fr_1fr] divide-y lg:divide-y-0 lg:divide-x divide-solid">
+                
+                {/* ── PHOTO PLACEHOLDER ── */}
+                <div className={`w-full min-h-[300px] lg:min-h-[440px] flex flex-col items-center justify-center group transition-colors ${colors.layer1Bg} ${colors.layer1Border}`}>
+                  <IconCamera className={`h-8 w-8 mb-3 opacity-40 group-hover:opacity-80 transition-opacity ${colors.textSecondary}`} />
+                  <p className={`text-sm tracking-wide font-light ${colors.textSecondary}`}>
+                    Reserved for {activeDiv.title} Division Photos
+                  </p>
                 </div>
-                <div className="flex flex-wrap gap-2 font-mono text-[11px]">
-                  {activeDiv.deliverables.map((del) => (
-                    <span
-                      key={del}
-                      className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-emerald-300"
-                    >
-                      ● {del}
-                    </span>
-                  ))}
+
+                {/* ── TEXT & DELIVERABLES ── */}
+                <div className={`p-8 lg:p-10 flex flex-col justify-center space-y-10 ${colors.layer1Border}`}>
+                  
+                  {/* Summary */}
+                  <div className="space-y-4">
+                    <div className={`text-[11px] uppercase tracking-[0.2em] font-bold ${colors.textSecondary}`}>
+                      Operational Summary
+                    </div>
+                    <p className={`text-[17px] md:text-[19px] leading-relaxed font-light ${colors.textPrimary}`}>
+                      {activeDiv.summary}
+                    </p>
+                  </div>
+
+                  {/* Deliverables (Tags) */}
+                  <div className="space-y-4 pt-4 border-t border-dashed" style={{ borderColor: 'inherit' }}>
+                    <div className={`text-[11px] uppercase tracking-[0.2em] font-bold ${colors.textSecondary}`}>
+                      Key Deliverables
+                    </div>
+                    <div className="flex flex-wrap gap-2.5">
+                      {activeDiv.deliverables.map((del) => (
+                        <span
+                          key={del}
+                          className={`border px-3.5 py-1.5 text-[13px] font-medium ${colors.tagBg} ${colors.textPrimary} ${colors.tagBorder}`}
+                        >
+                          {del}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
               </div>
-            </TacticalCard>
+
+            </div>
           </motion.div>
         </AnimatePresence>
-      </div>
 
-      {/* Engineering Pipeline & Integration Flowchart */}
-      <TacticalCard className="p-8 md:p-10 space-y-6">
-        <div className="flex items-center justify-between border-b border-[#c2b8a3]/12 pb-4">
-          <div>
-            <h3 className="font-mono text-[18px] font-bold text-[#e8e6dc]">
-              SYSTEM INTEGRATION PIPELINE
-            </h3>
-            <p className="mt-1 font-mono text-[12px] text-[#8b8f6b]">
-              End-to-end development cycle from tactical problem formulation to battle-ready deployment.
-            </p>
-          </div>
-          <span className="hidden sm:inline font-mono text-[10px] text-emerald-400 font-bold">
-            CONTINUOUS INTEGRATION
-          </span>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-4 font-mono text-[12px]">
-          {[
-            { step: "01", title: "RESEARCH & ALGO", desc: "Simulation in Gazebo, patent analysis & mathematical modeling." },
-            { step: "02", title: "HARDWARE & CAD", desc: "SolidWorks stress FEA, custom PCB layout & CNC machining." },
-            { step: "03", title: "AUTONOMY & ROS2", desc: "LiDAR SLAM tuning, PyTorch edge inference & motor control." },
-            { step: "04", title: "FIELD DEPLOYMENT", desc: "Monsoon testing, obstacle clearance & national defence showcase." },
-          ].map((pipe) => (
-            <div
-              key={pipe.step}
-              className="rounded-lg border border-[#c2b8a3]/12 bg-black/40 p-4 transition-all hover:border-emerald-500/30"
-            >
-              <div className="text-emerald-400 font-bold text-[14px]">PHASE {pipe.step}</div>
-              <div className="font-bold text-[#e8e6dc] text-[14px] mt-1">{pipe.title}</div>
-              <p className="mt-2 text-[#8b8f6b] text-[11px] leading-relaxed">{pipe.desc}</p>
-            </div>
-          ))}
-        </div>
-      </TacticalCard>
-    </main>
+      </main>
+    </>
   );
 }
