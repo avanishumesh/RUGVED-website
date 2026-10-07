@@ -476,8 +476,8 @@ function TimelineSpotlightItem({
 // ─────────────────────────────────────────────────────────────────────────────
 // Manual kerning in em. Negative = pull closer, positive = push apart.
 const KERN: Record<string, number> = {
-  GV: -0.12,
-  VE: 0.05,
+  GV: -0.0,
+  VE: 0.07,
 };
 
 function MetalTitle({ text, isLight }: { text: string; isLight: boolean }) {
@@ -503,7 +503,7 @@ function MetalTitle({ text, isLight }: { text: string; isLight: boolean }) {
 
   return (
     <div className={`metal-wrap ${isLight ? "is-light" : ""}`}>
-      <h1 ref={ref} className="metal-title font-isometra" aria-label={text}>
+      <h1 ref={ref} className="metal-title font-michroma" aria-label={text}>
         {text.split("").map((ch, i) => {
           const pair = i > 0 ? text[i - 1] + ch : "";
           return (
@@ -555,18 +555,17 @@ export default function Home() {
       {/* ── FONT ── */}
       {/* ── FONT + METAL TITLE STYLES ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700;800;900&family=Isometra&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
+        .font-audiowide { font-family: 'Audiowide', sans-serif !important; }
 
-        .font-isometra { font-family: 'Isometra', serif !important; }
         /* depth lives on the wrapper (filters on clipped text can break the fill) */
         /* ───────── METAL TITLE: solid glossy black, 3D ───────── */
 
-        /* DARK MODE: extrusion + ground shadow live on the wrapper */
         .metal-wrap {
           filter:
-            drop-shadow(0 0 1px rgba(255,255,255,.55))    /* all-around rim */
-            drop-shadow(0 -1.5px 0 rgba(255,255,255,.60)) /* strong top-edge catch-light */
+            drop-shadow(0 0 1px rgba(255,255,255,.55))
+            drop-shadow(0 -1.5px 0 rgba(255,255,255,.60))
             drop-shadow(0 1px 0 #2a2c33)
             drop-shadow(0 2px 0 #1a1b20)
             drop-shadow(0 3px 0 #101114)
@@ -579,19 +578,17 @@ export default function Home() {
           --my: 30%;
           margin: 0;
           padding: 0.1em 0.12em;
+          font-family: 'Audiowide', sans-serif !important;
           font-size: clamp(64px, 14vw, 168px);
           font-weight: 400;
-          letter-spacing: -0.07em;
+          letter-spacing: -0.02em;
           line-height: 0.95;
           user-select: none;
           background:
-            /* pointer-following specular */
             radial-gradient(circle at var(--mx) var(--my),
               rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 16%),
-            /* gloss sheen across the top of the letters */
             linear-gradient(180deg,
               rgba(255,255,255,.20) 0%, rgba(255,255,255,.04) 28%, rgba(255,255,255,0) 46%),
-            /* solid black body */
             linear-gradient(180deg, #121316 0%, #050506 45%, #000 100%);
           -webkit-background-clip: text;
                   background-clip: text;
@@ -599,18 +596,16 @@ export default function Home() {
                   color: transparent;
         }
 
-        /* LIGHT MODE: same solid black face, warm edge light + brown shadows
-           so it sits naturally on the tan background */
-           .is-light.metal-wrap {
-             filter:
-               drop-shadow(0 0 1px rgba(255,244,214,.85))    /* all-around warm rim */
-               drop-shadow(0 -1.5px 0 rgba(255,244,214,.95)) /* strong top-edge catch-light */
-               drop-shadow(0 1px 0 #3a2f22)
-               drop-shadow(0 2px 0 #2a2118)
-               drop-shadow(0 3px 0 #1a140e)
-               drop-shadow(0 4px 0 #0c0906)
-               drop-shadow(0 16px 20px rgba(60,38,12,.45));
-           }
+        .is-light.metal-wrap {
+          filter:
+            drop-shadow(0 0 1px rgba(255,244,214,.85))
+            drop-shadow(0 -1.5px 0 rgba(255,244,214,.95))
+            drop-shadow(0 1px 0 #3a2f22)
+            drop-shadow(0 2px 0 #2a2118)
+            drop-shadow(0 3px 0 #1a140e)
+            drop-shadow(0 4px 0 #0c0906)
+            drop-shadow(0 16px 20px rgba(60,38,12,.45));
+        }
         .is-light .metal-title {
           background:
             radial-gradient(circle at var(--mx) var(--my),
