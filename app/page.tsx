@@ -41,113 +41,257 @@ const ABOUT = {
 };
 
 const ACHIEVEMENTS = [
-  { label: "Smart India Hackathon", value: "Top 5 Finalist", year: "2024", badge: "NATIONAL" },
-  { label: "WALRUS 2.0 UGV Platform", value: "Field Deployed", year: "2024", badge: "HARDWARE" },
-  { label: "National Defence Expo", value: "Official Feature", year: "2025", badge: "EXPO" },
-  { label: "AI Terrain Navigation System", value: "Patent Filed", year: "2024", badge: "IPR" },
-  { label: "e-Yantra — IIT Bombay", value: "AIR 10", year: "2023-24", badge: "ROBOTICS" },
-  { label: "Guiding Gaze — OpenCV AI", value: "Global Rank 7", year: "2023", badge: "VISION" },
-  { label: "AI for Change Hackathon", value: "1st Place Winners", year: "2024", badge: "AI" },
-  { label: "Line Following Robot — BITS Goa", value: "Top 7 Finalist", year: "2024", badge: "AUTONOMY" },
-  { label: "Covideate — IIT Bombay Techfest", value: "1st Place", year: "2020", badge: "EMBEDDED" },
-  { label: "Def Hacks Global 2.0", value: "1st Place Champions", year: "2020", badge: "GLOBAL" },
+  {
+    label: "Smart India Hackathon",
+    value: "Top 5 Finalist",
+    year: "2024",
+    badge: "NATIONAL",
+  },
+  {
+    label: "WALRUS 2.0 UGV Platform",
+    value: "Field Deployed",
+    year: "2024",
+    badge: "HARDWARE",
+  },
+  {
+    label: "National Defence Expo",
+    value: "Official Feature",
+    year: "2025",
+    badge: "EXPO",
+  },
+  {
+    label: "AI Terrain Navigation System",
+    value: "Patent Filed",
+    year: "2024",
+    badge: "IPR",
+  },
+  {
+    label: "e-Yantra — IIT Bombay",
+    value: "AIR 10",
+    year: "2023-24",
+    badge: "ROBOTICS",
+  },
+  {
+    label: "Guiding Gaze — OpenCV AI",
+    value: "Global Rank 7",
+    year: "2023",
+    badge: "VISION",
+  },
+  {
+    label: "AI for Change Hackathon",
+    value: "1st Place Winners",
+    year: "2024",
+    badge: "AI",
+  },
+  {
+    label: "Line Following Robot — BITS Goa",
+    value: "Top 7 Finalist",
+    year: "2024",
+    badge: "AUTONOMY",
+  },
+  {
+    label: "Covideate — IIT Bombay Techfest",
+    value: "1st Place",
+    year: "2020",
+    badge: "EMBEDDED",
+  },
+  {
+    label: "Def Hacks Global 2.0",
+    value: "1st Place Champions",
+    year: "2020",
+    badge: "GLOBAL",
+  },
 ];
 
 const RESEARCH_PAPERS = [
-  { title: "Autonomous Terrain Navigation Using Multi-Modal Sensor Fusion & Deep AI", publisher: "IEEE Transactions on Field Robotics", year: "2024", tag: "AI / SLAM" },
-  { title: "Optimized Real-Time Pathfinding and Recovery in Extreme UGV Systems", publisher: "IEEE International Conference on Robotics and Automation (ICRA)", year: "2023", tag: "PATHFINDING" },
-  { title: "FPGA-Accelerated Microsecond Acoustic Triangulation for Muzzle Flash Localization", publisher: "Elsevier Robotics & Autonomous Systems", year: "2023", tag: "DSP / FPGA" },
+  {
+    title:
+      "Autonomous Terrain Navigation Using Multi-Modal Sensor Fusion & Deep AI",
+    publisher: "IEEE Transactions on Field Robotics",
+    year: "2024",
+    tag: "AI / SLAM",
+  },
+  {
+    title:
+      "Optimized Real-Time Pathfinding and Recovery in Extreme UGV Systems",
+    publisher:
+      "IEEE International Conference on Robotics and Automation (ICRA)",
+    year: "2023",
+    tag: "PATHFINDING",
+  },
+  {
+    title:
+      "FPGA-Accelerated Microsecond Acoustic Triangulation for Muzzle Flash Localization",
+    publisher: "Elsevier Robotics & Autonomous Systems",
+    year: "2023",
+    tag: "DSP / FPGA",
+  },
 ];
 
 const EVENTS = [
-  { id: 1, year: "2023", type: "achievement", badge: "VISION", title: "Guiding Gaze — OpenCV AI", detail: "Global Rank 7", tag: "COMP_VISION" },
-  { id: 2, year: "2023", type: "paper", badge: "PATHFINDING", title: "Optimized Real-Time Pathfinding and Recovery in Extreme UGV Systems", detail: "IEEE Int'l Conf. on Robotics & Automation (ICRA)", tag: "PEER_REVIEWED" },
-  { id: 3, year: "2023", type: "paper", badge: "DSP / FPGA", title: "FPGA-Accelerated Microsecond Acoustic Triangulation for Muzzle Flash Localization", detail: "Elsevier Robotics & Autonomous Systems (Preprint)", tag: "HARDWARE_DSP" },
-  { id: 4, year: "2023–24", type: "achievement", badge: "ROBOTICS", title: "e-Yantra — IIT Bombay", detail: "All India Rank 10", tag: "COMPETITION" },
-  { id: 5, year: "2024", type: "achievement", badge: "NATIONAL", title: "Smart India Hackathon", detail: "Top 5 Finalist (Defence Theme)", tag: "MINISTRY_OF_DEF" },
-  { id: 6, year: "2024", type: "achievement", badge: "HARDWARE", title: "WALRUS 2.0 UGV Platform", detail: "Field Deployed & Active Telemetry Validated", tag: "FLAGSHIP_PROT" },
-  { id: 7, year: "2024", type: "achievement", badge: "IPR", title: "AI Terrain Navigation System", detail: "Provisional Patent Filed (IPR / Govt. of India)", tag: "PATENT_PENDING" },
-  { id: 8, year: "2024", type: "paper", badge: "AI / SLAM", title: "Autonomous Terrain Navigation Using Multi-Modal Sensor Fusion & Deep AI", detail: "IEEE Transactions on Field Robotics", tag: "TRANSACTIONS" },
-  { id: 9, year: "2025", type: "achievement", badge: "EXPO", title: "National Defence Expo", detail: "Official Feature & Live Platform Showcase", tag: "KEYNOTE_EXHIBIT" },
+  {
+    id: 1,
+    year: "2023",
+    type: "achievement",
+    badge: "VISION",
+    title: "Guiding Gaze — OpenCV AI",
+    detail: "Global Rank 7",
+    tag: "COMP_VISION",
+  },
+  {
+    id: 2,
+    year: "2023",
+    type: "paper",
+    badge: "PATHFINDING",
+    title:
+      "Optimized Real-Time Pathfinding and Recovery in Extreme UGV Systems",
+    detail: "IEEE Int'l Conf. on Robotics & Automation (ICRA)",
+    tag: "PEER_REVIEWED",
+  },
+  {
+    id: 3,
+    year: "2023",
+    type: "paper",
+    badge: "DSP / FPGA",
+    title:
+      "FPGA-Accelerated Microsecond Acoustic Triangulation for Muzzle Flash Localization",
+    detail: "Elsevier Robotics & Autonomous Systems (Preprint)",
+    tag: "HARDWARE_DSP",
+  },
+  {
+    id: 4,
+    year: "2023–24",
+    type: "achievement",
+    badge: "ROBOTICS",
+    title: "e-Yantra — IIT Bombay",
+    detail: "All India Rank 10",
+    tag: "COMPETITION",
+  },
+  {
+    id: 5,
+    year: "2024",
+    type: "achievement",
+    badge: "NATIONAL",
+    title: "Smart India Hackathon",
+    detail: "Top 5 Finalist (Defence Theme)",
+    tag: "MINISTRY_OF_DEF",
+  },
+  {
+    id: 6,
+    year: "2024",
+    type: "achievement",
+    badge: "HARDWARE",
+    title: "WALRUS 2.0 UGV Platform",
+    detail: "Field Deployed & Active Telemetry Validated",
+    tag: "FLAGSHIP_PROT",
+  },
+  {
+    id: 7,
+    year: "2024",
+    type: "achievement",
+    badge: "IPR",
+    title: "AI Terrain Navigation System",
+    detail: "Provisional Patent Filed (IPR / Govt. of India)",
+    tag: "PATENT_PENDING",
+  },
+  {
+    id: 8,
+    year: "2024",
+    type: "paper",
+    badge: "AI / SLAM",
+    title:
+      "Autonomous Terrain Navigation Using Multi-Modal Sensor Fusion & Deep AI",
+    detail: "IEEE Transactions on Field Robotics",
+    tag: "TRANSACTIONS",
+  },
+  {
+    id: 9,
+    year: "2025",
+    type: "achievement",
+    badge: "EXPO",
+    title: "National Defence Expo",
+    detail: "Official Feature & Live Platform Showcase",
+    tag: "KEYNOTE_EXHIBIT",
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // THEME TOKENS — solid layered colours, no glow, swaps on light-mode
 // ─────────────────────────────────────────────────────────────────────────────
 const TL_NIGHT = {
-  panelBg:       "bg-[#070d09]",
-  panelBorder:   "border-[#1a3021]",
-  innerGrid:     "rgba(42,90,60,1)",
+  panelBg: "bg-[#070d09]",
+  panelBorder: "border-[#1a3021]",
+  innerGrid: "rgba(42,90,60,1)",
   bracketBorder: "border-[#243d2e]",
-  headerBorder:  "border-[#1a3021]",
-  rail:          "bg-[#1a3021]",
-  spine:         "bg-[#2d5a3d]",
-  head:          "bg-[#3a7a52]",
-  readoutBg:     "bg-[#070d09]",
+  headerBorder: "border-[#1a3021]",
+  rail: "bg-[#1a3021]",
+  spine: "bg-[#2d5a3d]",
+  head: "bg-[#3a7a52]",
+  readoutBg: "bg-[#070d09]",
   readoutBorder: "border-[#1a3021]",
-  readoutFill:   "bg-[#3a7a52]",
+  readoutFill: "bg-[#3a7a52]",
   progressTrack: "bg-[#1a3021]",
-  cardBg:        "bg-[#0b1510]",
-  cardBorder:    "border-[#1f3a28]",
-  cardActiveBg:  "bg-[#112018]",
-  cardAccentLeft:"border-l-[#3a7a52]",
-  tagBg:         "bg-[#1e3a28]",
-  tagBorder:     "border-[#1f3a28]",
-  tagText:       "text-[#4a8c62]",
-  yearPillBg:    "bg-[#0f1e14]",
-  yearPillBorder:"border-[#243d2e]",
-  yearPillText:  "text-[#4a7a5c]",
-  dotIdle:       "bg-[#243d2e]",
-  dotActive:     "bg-[#3a7a52]",
+  cardBg: "bg-[#0b1510]",
+  cardBorder: "border-[#1f3a28]",
+  cardActiveBg: "bg-[#112018]",
+  cardAccentLeft: "border-l-[#3a7a52]",
+  tagBg: "bg-[#1e3a28]",
+  tagBorder: "border-[#1f3a28]",
+  tagText: "text-[#4a8c62]",
+  yearPillBg: "bg-[#0f1e14]",
+  yearPillBorder: "border-[#243d2e]",
+  yearPillText: "text-[#4a7a5c]",
+  dotIdle: "bg-[#243d2e]",
+  dotActive: "bg-[#3a7a52]",
   connectorLine: "bg-[#1f3a28]",
-  footerBorder:  "border-[#1a3021]",
-  badgeBg:       "bg-[#1e3a28]",
-  badgeBorder:   "border-[#2a5040]",
-  badgeText:     "text-[#4a8c62]",
-  textPrimary:   "text-[#d4e8da]",
+  footerBorder: "border-[#1a3021]",
+  badgeBg: "bg-[#1e3a28]",
+  badgeBorder: "border-[#2a5040]",
+  badgeText: "text-[#4a8c62]",
+  textPrimary: "text-[#d4e8da]",
   textSecondary: "text-[#6b8c75]",
-  textMuted:     "text-[#3a5244]",
-  accentDot:     "bg-[#3a7a52]",
-  metaSep:       "bg-[#1a3021]",
-  iconColor:     "#3a7a52",
+  textMuted: "text-[#3a5244]",
+  accentDot: "bg-[#3a7a52]",
+  metaSep: "bg-[#1a3021]",
+  iconColor: "#3a7a52",
 };
 
 const TL_DAY = {
-  panelBg:       "bg-[#c8a882]",
-  panelBorder:   "border-[#8c6a48]",
-  innerGrid:     "rgba(90,58,30,1)",
+  panelBg: "bg-[#c8a882]",
+  panelBorder: "border-[#8c6a48]",
+  innerGrid: "rgba(90,58,30,1)",
   bracketBorder: "border-[#7a5535]",
-  headerBorder:  "border-[#8c6a48]",
-  rail:          "bg-[#a07850]",
-  spine:         "bg-[#7a5535]",
-  head:          "bg-[#5a3a1e]",
-  readoutBg:     "bg-[#b89a70]",
+  headerBorder: "border-[#8c6a48]",
+  rail: "bg-[#a07850]",
+  spine: "bg-[#7a5535]",
+  head: "bg-[#5a3a1e]",
+  readoutBg: "bg-[#b89a70]",
   readoutBorder: "border-[#8c6a48]",
-  readoutFill:   "bg-[#5a3a1e]",
+  readoutFill: "bg-[#5a3a1e]",
   progressTrack: "bg-[#a07850]",
-  cardBg:        "bg-[#b89a70]",
-  cardBorder:    "border-[#8c6a48]",
-  cardActiveBg:  "bg-[#c4a87e]",
-  cardAccentLeft:"border-l-[#5a3a1e]",
-  tagBg:         "bg-[#a07050]",
-  tagBorder:     "border-[#8c6a48]",
-  tagText:       "text-[#2a1408]",
-  yearPillBg:    "bg-[#a07850]",
-  yearPillBorder:"border-[#7a5535]",
-  yearPillText:  "text-[#2a1408]",
-  dotIdle:       "bg-[#8c6a48]",
-  dotActive:     "bg-[#5a3a1e]",
+  cardBg: "bg-[#b89a70]",
+  cardBorder: "border-[#8c6a48]",
+  cardActiveBg: "bg-[#c4a87e]",
+  cardAccentLeft: "border-l-[#5a3a1e]",
+  tagBg: "bg-[#a07050]",
+  tagBorder: "border-[#8c6a48]",
+  tagText: "text-[#2a1408]",
+  yearPillBg: "bg-[#a07850]",
+  yearPillBorder: "border-[#7a5535]",
+  yearPillText: "text-[#2a1408]",
+  dotIdle: "bg-[#8c6a48]",
+  dotActive: "bg-[#5a3a1e]",
   connectorLine: "bg-[#8c6a48]",
-  footerBorder:  "border-[#8c6a48]",
-  badgeBg:       "bg-[#a07050]",
-  badgeBorder:   "border-[#8c6a48]",
-  badgeText:     "text-[#2a1408]",
-  textPrimary:   "text-[#1e0e04]",
+  footerBorder: "border-[#8c6a48]",
+  badgeBg: "bg-[#a07050]",
+  badgeBorder: "border-[#8c6a48]",
+  badgeText: "text-[#2a1408]",
+  textPrimary: "text-[#1e0e04]",
   textSecondary: "text-[#4a2e14]",
-  textMuted:     "text-[#7a5535]",
-  accentDot:     "bg-[#5a3a1e]",
-  metaSep:       "bg-[#8c6a48]",
-  iconColor:     "#5a3a1e",
+  textMuted: "text-[#7a5535]",
+  accentDot: "bg-[#5a3a1e]",
+  metaSep: "bg-[#8c6a48]",
+  iconColor: "#5a3a1e",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -160,7 +304,9 @@ function SectionLabel({ k, label }: { k: string; label: string }) {
         <IconMinus className="h-3 w-3" /> {k}
       </span>
       <span className="h-px w-12 bg-[#8b8f6b]/20 hidden sm:block" />
-      <span className="font-bold tracking-[0.24em] text-[#e8e6dc]">{label}</span>
+      <span className="font-bold tracking-[0.24em] text-[#e8e6dc]">
+        {label}
+      </span>
     </div>
   );
 }
@@ -196,14 +342,26 @@ function TimelineSpotlightItem({
     offset: ["start 80%", "center 50%", "end 20%"],
   });
 
-  const scale   = useTransform(scrollYProgress, [0, 0.45, 0.5, 0.55, 1], [0.87, 1, 1, 1, 0.87]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.5, 0.6, 1],   [0.3,  1, 1, 1, 0.3]);
-  const dotScale= useTransform(scrollYProgress, [0, 0.5, 1],              [0.75, 1.5, 0.75]);
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.45, 0.5, 0.55, 1],
+    [0.87, 1, 1, 1, 0.87],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.5, 0.6, 1],
+    [0.3, 1, 1, 1, 0.3],
+  );
+  const dotScale = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0.75, 1.5, 0.75],
+  );
 
   // Smooth springs so the pop/shrink feels physical
-  const scaleS   = useSpring(scale,   { stiffness: 280, damping: 32 });
+  const scaleS = useSpring(scale, { stiffness: 280, damping: 32 });
   const opacityS = useSpring(opacity, { stiffness: 280, damping: 32 });
-  const dotS     = useSpring(dotScale,{ stiffness: 280, damping: 32 });
+  const dotS = useSpring(dotScale, { stiffness: 280, damping: 32 });
 
   // Active left-border highlight (solid, no glow)
   const isActive = useTransform(scrollYProgress, (v) => v > 0.35 && v < 0.65);
@@ -234,16 +392,22 @@ function TimelineSpotlightItem({
           {/* Header row */}
           <div className="flex items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
-              <span className={`font-mono text-[10px] tracking-[0.2em] font-bold uppercase ${tk.tagText}`}>
+              <span
+                className={`font-mono text-[10px] tracking-[0.2em] font-bold uppercase ${tk.tagText}`}
+              >
                 {event.badge}
               </span>
               {event.tag && (
-                <span className={`font-mono text-[9px] tracking-widest hidden sm:inline ${tk.textMuted}`}>
+                <span
+                  className={`font-mono text-[9px] tracking-widest hidden sm:inline ${tk.textMuted}`}
+                >
                   [{event.tag}]
                 </span>
               )}
             </div>
-            <span className={`font-mono text-[11px] font-bold ${tk.textSecondary}`}>
+            <span
+              className={`font-mono text-[11px] font-bold ${tk.textSecondary}`}
+            >
               {event.year}
             </span>
           </div>
@@ -255,18 +419,24 @@ function TimelineSpotlightItem({
               strokeWidth={2}
               style={{ color: tk.iconColor, flexShrink: 0, marginTop: 2 }}
             />
-            <h3 className={`font-commissioner font-semibold text-[14px] md:text-[15px] leading-snug tracking-tight ${tk.textPrimary}`}>
+            <h3
+              className={`font-commissioner font-semibold text-[14px] md:text-[15px] leading-snug tracking-tight ${tk.textPrimary}`}
+            >
               {event.title}
             </h3>
           </div>
 
           {/* Detail line */}
-          <p className={`font-mono text-[11px] font-medium mt-3 ml-[23px] leading-relaxed ${tk.textSecondary}`}>
+          <p
+            className={`font-mono text-[11px] font-medium mt-3 ml-[23px] leading-relaxed ${tk.textSecondary}`}
+          >
             {event.detail}
           </p>
 
           {/* Micro telemetry bar */}
-          <div className={`mt-4 pt-3 border-t ${tk.headerBorder} flex items-center justify-between font-mono text-[9px] ${tk.textMuted}`}>
+          <div
+            className={`mt-4 pt-3 border-t ${tk.headerBorder} flex items-center justify-between font-mono text-[9px] ${tk.textMuted}`}
+          >
             <span className="tracking-widest uppercase">
               {isPaper ? "ARCHIVE // VALIDATED" : "MILESTONE // VERIFIED"}
             </span>
@@ -301,6 +471,55 @@ function TimelineSpotlightItem({
     </div>
   );
 }
+// ─────────────────────────────────────────────────────────────────────────────
+// MetalTitle — dark metallic hero title (pure CSS, pointer-driven highlight)
+// ─────────────────────────────────────────────────────────────────────────────
+// Manual kerning in em. Negative = pull closer, positive = push apart.
+const KERN: Record<string, number> = {
+  GV: -0.12,
+  VE: 0.05,
+};
+
+function MetalTitle({ text, isLight }: { text: string; isLight: boolean }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty(
+        "--mx",
+        `${((e.clientX - r.left) / r.width) * 100}%`,
+      );
+      el.style.setProperty(
+        "--my",
+        `${((e.clientY - r.top) / r.height) * 100}%`,
+      );
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
+
+  return (
+    <div className={`metal-wrap ${isLight ? "is-light" : ""}`}>
+      <h1 ref={ref} className="metal-title font-isometra" aria-label={text}>
+        {text.split("").map((ch, i) => {
+          const pair = i > 0 ? text[i - 1] + ch : "";
+          return (
+            <span
+              key={i}
+              aria-hidden
+              style={{ marginLeft: `${KERN[pair] ?? 0}em` }}
+            >
+              {ch}
+            </span>
+          );
+        })}
+      </h1>
+    </div>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HOME PAGE
@@ -311,8 +530,8 @@ export default function Home() {
   const tk = isLight ? TL_DAY : TL_NIGHT;
 
   const schematicRef = useRef<HTMLDivElement>(null);
-  const terminalRef  = useRef<HTMLDivElement>(null);
-  const trackRef     = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   // Spine progress: maps scroll from first→last item passing the screen centre
   const { scrollYProgress } = useScroll({
@@ -328,38 +547,87 @@ export default function Home() {
 
   const spineHeight = useTransform(smoothProgress, [0, 1], ["0%", "100%"]);
   const percentReadout = useTransform(smoothProgress, (v) =>
-    Math.min(100, Math.max(0, Math.round(v * 100)))
+    Math.min(100, Math.max(0, Math.round(v * 100))),
   );
 
   return (
     <main className="mx-auto max-w-[1440px] px-6 pt-6 md:px-8 md:pt-8 space-y-20 md:space-y-28">
       {/* ── FONT ── */}
+      {/* ── FONT + METAL TITLE STYLES ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700;800;900&display=swap');
-        .font-commissioner { font-family: 'Commissioner', sans-serif; }
-      `}</style>
+        @import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700;800;900&family=Isometra&display=swap');
 
-      {/* ── HERO WARP TEXT ── */}
+
+        .font-isometra { font-family: 'Isometra', serif !important; }
+        /* depth lives on the wrapper (filters on clipped text can break the fill) */
+        /* ───────── METAL TITLE: solid glossy black, 3D ───────── */
+
+        /* DARK MODE: extrusion + ground shadow live on the wrapper */
+        .metal-wrap {
+          filter:
+            drop-shadow(0 0 1px rgba(255,255,255,.55))    /* all-around rim */
+            drop-shadow(0 -1.5px 0 rgba(255,255,255,.60)) /* strong top-edge catch-light */
+            drop-shadow(0 1px 0 #2a2c33)
+            drop-shadow(0 2px 0 #1a1b20)
+            drop-shadow(0 3px 0 #101114)
+            drop-shadow(0 4px 0 #08090b)
+            drop-shadow(0 18px 24px rgba(0,0,0,.8));
+        }
+
+        .metal-title {
+          --mx: 50%;
+          --my: 30%;
+          margin: 0;
+          padding: 0.1em 0.12em;
+          font-size: clamp(64px, 14vw, 168px);
+          font-weight: 400;
+          letter-spacing: -0.07em;
+          line-height: 0.95;
+          user-select: none;
+          background:
+            /* pointer-following specular */
+            radial-gradient(circle at var(--mx) var(--my),
+              rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 16%),
+            /* gloss sheen across the top of the letters */
+            linear-gradient(180deg,
+              rgba(255,255,255,.20) 0%, rgba(255,255,255,.04) 28%, rgba(255,255,255,0) 46%),
+            /* solid black body */
+            linear-gradient(180deg, #121316 0%, #050506 45%, #000 100%);
+          -webkit-background-clip: text;
+                  background-clip: text;
+          -webkit-text-fill-color: transparent;
+                  color: transparent;
+        }
+
+        /* LIGHT MODE: same solid black face, warm edge light + brown shadows
+           so it sits naturally on the tan background */
+           .is-light.metal-wrap {
+             filter:
+               drop-shadow(0 0 1px rgba(255,244,214,.85))    /* all-around warm rim */
+               drop-shadow(0 -1.5px 0 rgba(255,244,214,.95)) /* strong top-edge catch-light */
+               drop-shadow(0 1px 0 #3a2f22)
+               drop-shadow(0 2px 0 #2a2118)
+               drop-shadow(0 3px 0 #1a140e)
+               drop-shadow(0 4px 0 #0c0906)
+               drop-shadow(0 16px 20px rgba(60,38,12,.45));
+           }
+        .is-light .metal-title {
+          background:
+            radial-gradient(circle at var(--mx) var(--my),
+              rgba(255,244,214,.34) 0%, rgba(255,244,214,0) 16%),
+            linear-gradient(180deg,
+              rgba(255,244,214,.22) 0%, rgba(255,244,214,.05) 28%, rgba(255,244,214,0) 46%),
+            linear-gradient(180deg, #17130f 0%, #070605 45%, #000 100%);
+          -webkit-background-clip: text;
+                  background-clip: text;
+        }
+      `}</style>
+      {/* ── HERO TITLE ── */}
       <div className="flex h-[calc(100vh-2rem)] w-full flex-col overflow-hidden">
-        <div className="flex flex-1 items-center -translate-y-[12vh]">
-          <WarpText
-            text="RUGVED"
-            color={isLight ? "#d9c490" : "#9ea3c7"}
-            warpStrength={0.055}
-            warpScale={1.35}
-            speed={0.4}
-            pointerInfluence={0.42}
-            pointerStrength={0.35}
-            refraction={0.012}
-            ripple
-            fontSize={168}
-            fontWeight={900}
-            letterSpacing={-0.07}
-            lineHeight={0.82}
-          />
+        <div className="flex flex-1 items-center justify-center -translate-y-[12vh]">
+          <MetalTitle text="RUGVED" isLight={isLight} />
         </div>
       </div>
-
       {/* ── SECTION HERO ── */}
       <motion.section
         ref={schematicRef}
@@ -377,9 +645,15 @@ export default function Home() {
           >
             <div>
               <div className="flex flex-wrap items-center gap-2.5 font-mono text-[11px] tracking-[0.28em] text-[#8b8f6b]">
-                <span className="rounded bg-[#c2b8a3] px-2.5 py-1 font-bold text-[#111410]">MIT MANIPAL</span>
-                <span className="rounded border border-white/[0.12] bg-white/[0.05] backdrop-blur-md px-2.5 py-1 text-[#e8e6dc]">EST. 2016</span>
-                <span className="hidden sm:inline text-[10px] text-[#8b8f6b]">— STUDENT DEFENCE ROBOTICS</span>
+                <span className="rounded bg-[#c2b8a3] px-2.5 py-1 font-bold text-[#111410]">
+                  MIT MANIPAL
+                </span>
+                <span className="rounded border border-white/[0.12] bg-white/[0.05] backdrop-blur-md px-2.5 py-1 text-[#e8e6dc]">
+                  EST. 2016
+                </span>
+                <span className="hidden sm:inline text-[10px] text-[#8b8f6b]">
+                  — STUDENT DEFENCE ROBOTICS
+                </span>
               </div>
 
               <div className="mt-5 flex items-center gap-3 font-mono text-[10px] tracking-[0.28em] text-[#8b8f6b]">
@@ -390,7 +664,12 @@ export default function Home() {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <div className="rounded-lg border border-white/[0.12] bg-white/[0.05] backdrop-blur-md px-3.5 py-2">
                   <SplitFlapText
-                    words={["DEFENCE ROBOTICS", "AUTONOMOUS UGVs", "FIELD DEPLOYED", "PATENT FILED"]}
+                    words={[
+                      "DEFENCE ROBOTICS",
+                      "AUTONOMOUS UGVs",
+                      "FIELD DEPLOYED",
+                      "PATENT FILED",
+                    ]}
                     flipDuration={0.09}
                     stagger={0.04}
                     cycleDelay={2400}
@@ -404,13 +683,18 @@ export default function Home() {
                     padTo={18}
                   />
                 </div>
-                <span className="font-mono text-[11px] tracking-[0.2em] text-[#8b8f6b]">PATROL • SCOUT • DEFEND</span>
+                <span className="font-mono text-[11px] tracking-[0.2em] text-[#8b8f6b]">
+                  PATROL • SCOUT • DEFEND
+                </span>
               </div>
 
               <p className="mt-6 max-w-[62ch] text-[15px] md:text-[16px] leading-[1.75] text-[#c2b8a3]/90 font-commissioner font-medium">
                 {ABOUT.intro} Engineered from ground up: flagship{" "}
-                <span className="font-bold text-[#f2efe6]">{ABOUT.flagship}</span>,
-                FPGA-driven acoustic gunshot triangulation, and multi-modal AI terrain navigation.
+                <span className="font-bold text-[#f2efe6]">
+                  {ABOUT.flagship}
+                </span>
+                , FPGA-driven acoustic gunshot triangulation, and multi-modal AI
+                terrain navigation.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -423,14 +707,18 @@ export default function Home() {
                 </Link>
 
                 <button
-                  onClick={() => schematicRef.current?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() =>
+                    schematicRef.current?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className="inline-flex items-center gap-2 rounded-lg border border-white/[0.12] bg-white/[0.05] backdrop-blur-md px-5 py-3.5 font-mono text-[13px] tracking-[0.18em] text-[#c2b8a3] hover:border-emerald-500/50 hover:text-emerald-300 transition-all"
                 >
                   <IconCpu className="h-4 w-4" /> WALRUS BLUEPRINT
                 </button>
 
                 <button
-                  onClick={() => terminalRef.current?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() =>
+                    terminalRef.current?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className="inline-flex items-center gap-2 rounded-lg border border-white/[0.10] bg-white/[0.04] backdrop-blur-md px-4 py-3.5 font-mono text-[13px] tracking-[0.18em] text-[#8b8f6b] hover:text-[#e8e6dc] hover:border-[#c2b8a3]/30 transition-all"
                 >
                   <IconTerminal className="h-4 w-4" /> CLI CONSOLE
@@ -440,19 +728,33 @@ export default function Home() {
 
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-[#c2b8a3]/12 pt-6 font-mono">
               <div>
-                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">OPERATIONAL SINCE</div>
-                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">2016</div>
+                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">
+                  OPERATIONAL SINCE
+                </div>
+                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">
+                  2016
+                </div>
               </div>
               <div>
-                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">FLAGSHIP UGV</div>
-                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">WALRUS 2.0</div>
+                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">
+                  FLAGSHIP UGV
+                </div>
+                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">
+                  WALRUS 2.0
+                </div>
               </div>
               <div>
-                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">DIVISIONS</div>
-                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">06 CORE</div>
+                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">
+                  DIVISIONS
+                </div>
+                <div className="mt-1 text-[20px] font-bold tracking-tight text-[#e8e6dc]">
+                  06 CORE
+                </div>
               </div>
               <div>
-                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">STATUS</div>
+                <div className="text-[10px] tracking-[0.18em] text-[#8b8f6b]">
+                  STATUS
+                </div>
                 <div className="mt-1 inline-flex items-center gap-1.5 text-[15px] font-bold text-emerald-400">
                   <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
                   FIELD READY
@@ -470,10 +772,30 @@ export default function Home() {
 
               <div className="mt-5 grid grid-cols-2 gap-3">
                 {[
-                  { k: "ENDURANCE", v: "6.5H+", sub: "Continuous Field Ops", icon: IconBolt },
-                  { k: "PAYLOAD", v: "45 KG", sub: "Modular Swappable Bay", icon: IconShield },
-                  { k: "NAVIGATION", v: "AI SLAM", sub: "Terrain Classifier", icon: IconCompass },
-                  { k: "SCOUT RANGE", v: "2.0 KM", sub: "Tethered Aerial Link", icon: IconRadar },
+                  {
+                    k: "ENDURANCE",
+                    v: "6.5H+",
+                    sub: "Continuous Field Ops",
+                    icon: IconBolt,
+                  },
+                  {
+                    k: "PAYLOAD",
+                    v: "45 KG",
+                    sub: "Modular Swappable Bay",
+                    icon: IconShield,
+                  },
+                  {
+                    k: "NAVIGATION",
+                    v: "AI SLAM",
+                    sub: "Terrain Classifier",
+                    icon: IconCompass,
+                  },
+                  {
+                    k: "SCOUT RANGE",
+                    v: "2.0 KM",
+                    sub: "Tethered Aerial Link",
+                    icon: IconRadar,
+                  },
                 ].map((s) => (
                   <div
                     key={s.k}
@@ -483,8 +805,12 @@ export default function Home() {
                       <span>{s.k}</span>
                       <s.icon className="h-3.5 w-3.5 text-[#8b8f6b]/70" />
                     </div>
-                    <div className="mt-1.5 font-mono text-[18px] font-bold tracking-tight text-[#e8e6dc]">{s.v}</div>
-                    <div className="font-mono text-[10px] text-[#8b8f6b] mt-0.5">{s.sub}</div>
+                    <div className="mt-1.5 font-mono text-[18px] font-bold tracking-tight text-[#e8e6dc]">
+                      {s.v}
+                    </div>
+                    <div className="font-mono text-[10px] text-[#8b8f6b] mt-0.5">
+                      {s.sub}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -495,26 +821,43 @@ export default function Home() {
               </div>
             </TacticalCard>
 
-            <TacticalCard badge="NDE 2025" className="p-6 md:p-7 flex-1 flex flex-col justify-between">
+            <TacticalCard
+              badge="NDE 2025"
+              className="p-6 md:p-7 flex-1 flex flex-col justify-between"
+            >
               <div>
-                <div className="font-mono text-[11px] tracking-[0.2em] text-[#8b8f6b]">PLATFORM SPOTLIGHT</div>
+                <div className="font-mono text-[11px] tracking-[0.2em] text-[#8b8f6b]">
+                  PLATFORM SPOTLIGHT
+                </div>
                 <div className="mt-3 flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/[0.12] bg-white/[0.06] backdrop-blur-md">
                     <IconTank className="h-8 w-8 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="font-commissioner font-bold text-[18px] tracking-tight text-[#e8e6dc]">WALRUS 2.0 UGV</h3>
-                    <p className="font-mono text-[11px] text-[#8b8f6b] mt-1">All-Terrain Heavy Duty Tactical Rover</p>
+                    <h3 className="font-commissioner font-bold text-[18px] tracking-tight text-[#e8e6dc]">
+                      WALRUS 2.0 UGV
+                    </h3>
+                    <p className="font-mono text-[11px] text-[#8b8f6b] mt-1">
+                      All-Terrain Heavy Duty Tactical Rover
+                    </p>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2 font-mono text-[10px]">
-                  <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-emerald-300">● 360° LiDAR &amp; Thermal</span>
-                  <span className="rounded border border-white/[0.08] bg-white/[0.02] px-2 py-0.5 text-[#c2b8a3]">● FPGA Gunshot Detection</span>
-                  <span className="rounded border border-white/[0.08] bg-white/[0.02] px-2 py-0.5 text-[#c2b8a3]">● Zero-Turn Pivot</span>
+                  <span className="rounded border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-emerald-300">
+                    ● 360° LiDAR &amp; Thermal
+                  </span>
+                  <span className="rounded border border-white/[0.08] bg-white/[0.02] px-2 py-0.5 text-[#c2b8a3]">
+                    ● FPGA Gunshot Detection
+                  </span>
+                  <span className="rounded border border-white/[0.08] bg-white/[0.02] px-2 py-0.5 text-[#c2b8a3]">
+                    ● Zero-Turn Pivot
+                  </span>
                 </div>
               </div>
               <button
-                onClick={() => schematicRef.current?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() =>
+                  schematicRef.current?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="mt-6 flex items-center justify-between rounded-lg border border-white/[0.10] bg-white/[0.04] backdrop-blur-md px-4 py-3 font-mono text-[11px] tracking-wider text-[#c2b8a3] hover:border-emerald-500/40 hover:text-emerald-300 transition-colors"
               >
                 <span>INSPECT INTERACTIVE BLUEPRINT</span>
@@ -525,7 +868,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-                 {/* ── SECTION 01: MILESTONES & SCIENTIFIC ARCHIVE ── */}
+      {/* ── SECTION 01: MILESTONES & SCIENTIFIC ARCHIVE ── */}
       <motion.section
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -556,11 +899,16 @@ export default function Home() {
           </div>
 
           {/* Corner brackets */}
-          <div aria-hidden className={`pointer-events-none absolute left-0 top-0 h-7 w-7 border-l-2 border-t-2 rounded-tl-2xl ${tk.bracketBorder} transition-colors duration-1000`} />
-          <div aria-hidden className={`pointer-events-none absolute right-0 bottom-0 h-7 w-7 border-r-2 border-b-2 rounded-br-2xl ${tk.bracketBorder} transition-colors duration-1000`} />
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute left-0 top-0 h-7 w-7 border-l-2 border-t-2 rounded-tl-2xl ${tk.bracketBorder} transition-colors duration-1000`}
+          />
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute right-0 bottom-0 h-7 w-7 border-r-2 border-b-2 rounded-br-2xl ${tk.bracketBorder} transition-colors duration-1000`}
+          />
 
           <div className="relative p-5 sm:p-8 md:p-10">
-
             {/* ── HEADER ── */}
             <header
               className={`
@@ -570,14 +918,23 @@ export default function Home() {
               `}
             >
               <div className="max-w-2xl">
-                <h2 className={`font-commissioner font-bold text-2xl md:text-[26px] leading-tight tracking-tight ${tk.textPrimary} transition-colors duration-1000`}>
+                <h2
+                  className={`font-commissioner font-bold text-2xl md:text-[26px] leading-tight tracking-tight ${tk.textPrimary} transition-colors duration-1000`}
+                >
                   MIT Manipal Defence Robotics History
                 </h2>
-                <p className={`mt-2 text-[13px] leading-relaxed ${tk.textSecondary} transition-colors duration-1000`}>
-                  Every fielded platform, competition result and published paper, in the order it happened.
+                <p
+                  className={`mt-2 text-[13px] leading-relaxed ${tk.textSecondary} transition-colors duration-1000`}
+                >
+                  Every fielded platform, competition result and published
+                  paper, in the order it happened.
                 </p>
-                <div className={`mt-3 flex items-center gap-3 font-mono text-[10px] tracking-[0.18em] ${tk.textMuted} transition-colors duration-1000`}>
-                  <span className={`h-[5px] w-[5px] rounded-full ${tk.accentDot}`} />
+                <div
+                  className={`mt-3 flex items-center gap-3 font-mono text-[10px] tracking-[0.18em] ${tk.textMuted} transition-colors duration-1000`}
+                >
+                  <span
+                    className={`h-[5px] w-[5px] rounded-full ${tk.accentDot}`}
+                  />
                   <span>{EVENTS.length} RECORDS</span>
                   <span className={`h-px w-5 ${tk.metaSep}`} />
                   <span>RESEARCH VECTOR</span>
@@ -587,7 +944,6 @@ export default function Home() {
 
             {/* ── CONTENT WRAPPER ── */}
             <div className="relative flex flex-col lg:flex-row lg:items-start gap-8 pt-6 sm:pt-8">
-              
               {/* ── PROGRESS READOUT OVERLAY (Now perfectly sticky) ── */}
               <div
                 className={`
@@ -608,20 +964,30 @@ export default function Home() {
                 >
                   {/* Top row: label + live number */}
                   <div className="flex items-baseline justify-between font-mono mb-2">
-                    <span className={`flex items-center gap-2 text-[9px] tracking-[0.18em] ${tk.textMuted}`}>
+                    <span
+                      className={`flex items-center gap-2 text-[9px] tracking-[0.18em] ${tk.textMuted}`}
+                    >
                       <span
                         className={`h-[5px] w-[5px] rounded-full ${tk.accentDot} animate-[pulse_2s_ease-in-out_infinite]`}
                       />
                       VECTOR
                     </span>
-                    <span className={`text-[20px] font-bold tabular-nums leading-none ${tk.textPrimary} transition-colors duration-1000`}>
+                    <span
+                      className={`text-[20px] font-bold tabular-nums leading-none ${tk.textPrimary} transition-colors duration-1000`}
+                    >
                       <DynamicPercent value={percentReadout} />
-                      <span className={`ml-0.5 text-[10px] font-medium ${tk.textSecondary}`}>%</span>
+                      <span
+                        className={`ml-0.5 text-[10px] font-medium ${tk.textSecondary}`}
+                      >
+                        %
+                      </span>
                     </span>
                   </div>
 
                   {/* Progress bar */}
-                  <div className={`relative h-[3px] w-full overflow-hidden rounded-full ${tk.progressTrack} transition-colors duration-1000`}>
+                  <div
+                    className={`relative h-[3px] w-full overflow-hidden rounded-full ${tk.progressTrack} transition-colors duration-1000`}
+                  >
                     <motion.div
                       style={{ width: spineHeight }}
                       className={`h-full rounded-full ${tk.readoutFill} transition-colors duration-1000`}
@@ -629,15 +995,24 @@ export default function Home() {
                   </div>
 
                   {/* Quarter tick labels */}
-                  <div aria-hidden className={`mt-1.5 flex justify-between font-mono text-[8px] tracking-widest ${tk.textMuted} transition-colors duration-1000`}>
-                    <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+                  <div
+                    aria-hidden
+                    className={`mt-1.5 flex justify-between font-mono text-[8px] tracking-widest ${tk.textMuted} transition-colors duration-1000`}
+                  >
+                    <span>0</span>
+                    <span>25</span>
+                    <span>50</span>
+                    <span>75</span>
+                    <span>100</span>
                   </div>
                 </div>
               </div>
 
               {/* ── TIMELINE TRACK ── */}
-              <div className="relative flex-1 w-full min-w-0 pb-8 order-2 lg:order-1" ref={trackRef}>
-
+              <div
+                className="relative flex-1 w-full min-w-0 pb-8 order-2 lg:order-1"
+                ref={trackRef}
+              >
                 {/* Inactive rail */}
                 <div
                   className={`
@@ -697,10 +1072,13 @@ export default function Home() {
                 transition-colors duration-1000 ease-out
               `}
             >
-              <p className={`max-w-xl font-mono text-[9px] leading-relaxed ${tk.textMuted} transition-colors duration-1000`}>
-                <span className={tk.textSecondary}>Note —</span>{" "}
-                Papers published under institutional review at MIT Manipal.
-                Full preprints are available through the internal dossier or on request.
+              <p
+                className={`max-w-xl font-mono text-[9px] leading-relaxed ${tk.textMuted} transition-colors duration-1000`}
+              >
+                <span className={tk.textSecondary}>Note —</span> Papers
+                published under institutional review at MIT Manipal. Full
+                preprints are available through the internal dossier or on
+                request.
               </p>
               <div
                 className={`
@@ -710,11 +1088,12 @@ export default function Home() {
                   transition-colors duration-1000 ease-out
                 `}
               >
-                <span className={`h-[5px] w-[5px] rounded-full ${tk.accentDot}`} />
+                <span
+                  className={`h-[5px] w-[5px] rounded-full ${tk.accentDot}`}
+                />
                 SEC-LEVEL · UNCLASSIFIED
               </div>
             </footer>
-
           </div>
         </div>
       </motion.section>
@@ -729,7 +1108,10 @@ export default function Home() {
         <SectionLabel k="02" label="CORE CAPABILITIES & ENGINEERING" />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <TacticalCard badge="AI // VISION" className="p-7 md:col-span-2 lg:col-span-2 flex flex-col justify-between">
+          <TacticalCard
+            badge="AI // VISION"
+            className="p-7 md:col-span-2 lg:col-span-2 flex flex-col justify-between"
+          >
             <div>
               <div className="flex h-10 w-10 items-center justify-center rounded border border-white/[0.12] bg-white/[0.04] text-emerald-400">
                 <IconEye className="h-5 w-5" />
@@ -738,36 +1120,50 @@ export default function Home() {
                 Multi-Modal AI Perception &amp; 3D SLAM
               </h3>
               <p className="mt-3 max-w-[65ch] font-commissioner text-[14px] leading-relaxed text-[#c2b8a3]/80">
-                Our vision pipeline fuses 360° solid-state LiDAR point clouds with stereoscopic thermal cameras.
-                Edge deep learning models segment terrain trafficability in real time, detecting ditches, obstacles,
-                and foliage even in complete smoke and zero illumination.
+                Our vision pipeline fuses 360° solid-state LiDAR point clouds
+                with stereoscopic thermal cameras. Edge deep learning models
+                segment terrain trafficability in real time, detecting ditches,
+                obstacles, and foliage even in complete smoke and zero
+                illumination.
               </p>
             </div>
             <div className="mt-6 grid grid-cols-3 gap-3 border-t border-[#c2b8a3]/10 pt-4 font-mono text-[10px]">
               <div className="border-r border-[#c2b8a3]/10 pr-2">
                 <div className="text-[#8b8f6b]">LATENCY</div>
-                <div className="font-bold text-[#e8e6dc] mt-0.5">18ms Edge Inference</div>
+                <div className="font-bold text-[#e8e6dc] mt-0.5">
+                  18ms Edge Inference
+                </div>
               </div>
               <div className="border-r border-[#c2b8a3]/10 pr-2">
                 <div className="text-[#8b8f6b]">MAPPING</div>
-                <div className="font-bold text-[#e8e6dc] mt-0.5">RTAB-Map 3D Voxel</div>
+                <div className="font-bold text-[#e8e6dc] mt-0.5">
+                  RTAB-Map 3D Voxel
+                </div>
               </div>
               <div>
                 <div className="text-[#8b8f6b]">COMPUTE</div>
-                <div className="font-bold text-[#e8e6dc] mt-0.5">275 TOPS NVIDIA</div>
+                <div className="font-bold text-[#e8e6dc] mt-0.5">
+                  275 TOPS NVIDIA
+                </div>
               </div>
             </div>
           </TacticalCard>
 
-          <TacticalCard badge="FPGA // DSP" className="p-7 flex flex-col justify-between">
+          <TacticalCard
+            badge="FPGA // DSP"
+            className="p-7 flex flex-col justify-between"
+          >
             <div>
               <div className="flex h-10 w-10 items-center justify-center rounded border border-white/[0.12] bg-white/[0.04] text-amber-400">
                 <IconTarget className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 font-commissioner text-[18px] font-bold tracking-tight text-[#e8e6dc]">Acoustic Triangulation</h3>
+              <h3 className="mt-5 font-commissioner text-[18px] font-bold tracking-tight text-[#e8e6dc]">
+                Acoustic Triangulation
+              </h3>
               <p className="mt-2.5 font-commissioner text-[14px] leading-relaxed text-[#c2b8a3]/70">
-                FPGA-accelerated 4-microphone array capturing microsecond acoustic shockwaves to triangulate
-                sniper muzzle origin with ±1.8° azimuth accuracy.
+                FPGA-accelerated 4-microphone array capturing microsecond
+                acoustic shockwaves to triangulate sniper muzzle origin with
+                ±1.8° azimuth accuracy.
               </p>
             </div>
             <div className="mt-5 rounded border border-amber-500/20 bg-amber-500/10 px-3 py-2 font-mono text-[10px] text-amber-300">
@@ -775,15 +1171,21 @@ export default function Home() {
             </div>
           </TacticalCard>
 
-          <TacticalCard badge="PATENT FILED" className="p-7 flex flex-col justify-between">
+          <TacticalCard
+            badge="PATENT FILED"
+            className="p-7 flex flex-col justify-between"
+          >
             <div>
               <div className="flex h-10 w-10 items-center justify-center rounded border border-white/[0.12] bg-white/[0.04] text-cyan-400">
                 <IconCompass className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 font-commissioner text-[18px] font-bold tracking-tight text-[#e8e6dc]">Adaptive Pathfinding</h3>
+              <h3 className="mt-5 font-commissioner text-[18px] font-bold tracking-tight text-[#e8e6dc]">
+                Adaptive Pathfinding
+              </h3>
               <p className="mt-2.5 font-commissioner text-[14px] leading-relaxed text-[#c2b8a3]/70">
-                Proprietary reinforcement learning algorithms for dynamic re-routing when encountering sudden
-                rockfalls, collapsed trenches, or impassable wetlands.
+                Proprietary reinforcement learning algorithms for dynamic
+                re-routing when encountering sudden rockfalls, collapsed
+                trenches, or impassable wetlands.
               </p>
             </div>
             <div className="mt-5 rounded border border-cyan-500/20 bg-cyan-500/10 px-3 py-2 font-mono text-[10px] text-cyan-300">
@@ -791,7 +1193,10 @@ export default function Home() {
             </div>
           </TacticalCard>
 
-          <TacticalCard badge="MECHANICAL" className="p-7 md:col-span-2 lg:col-span-2 flex flex-col justify-between">
+          <TacticalCard
+            badge="MECHANICAL"
+            className="p-7 md:col-span-2 lg:col-span-2 flex flex-col justify-between"
+          >
             <div>
               <div className="flex h-10 w-10 items-center justify-center rounded border border-white/[0.12] bg-white/[0.04] text-emerald-400">
                 <IconShield className="h-5 w-5" />
@@ -800,15 +1205,22 @@ export default function Home() {
                 Battlefield-Ready Mechanical Architecture
               </h3>
               <p className="mt-3 max-w-[65ch] font-commissioner text-[14px] leading-relaxed text-[#c2b8a3]/80">
-                Built from aircraft-grade 6061-T6 aluminum alloy and reinforced rubber-composite treads. IP67 sealed
-                compartments protect electronics against fine dust, heavy monsoon rainfall, and river fording depths
-                up to 0.6 meters.
+                Built from aircraft-grade 6061-T6 aluminum alloy and reinforced
+                rubber-composite treads. IP67 sealed compartments protect
+                electronics against fine dust, heavy monsoon rainfall, and river
+                fording depths up to 0.6 meters.
               </p>
             </div>
             <div className="mt-6 flex flex-wrap gap-2 font-mono text-[10px]">
-              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">45° SLOPE CLIMB</span>
-              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">ZERO-RADIUS PIVOT</span>
-              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">IP67 ENVIRONMENTAL SEAL</span>
+              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">
+                45° SLOPE CLIMB
+              </span>
+              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">
+                ZERO-RADIUS PIVOT
+              </span>
+              <span className="rounded border border-white/[0.08] bg-white/[0.02] px-3 py-1.5 text-[#c2b8a3]">
+                IP67 ENVIRONMENTAL SEAL
+              </span>
             </div>
           </TacticalCard>
         </div>
@@ -832,8 +1244,9 @@ export default function Home() {
                 SUPPORTING ARSENAL // INDUSTRIAL PARTNERS
               </h3>
               <p className="mt-2 max-w-[65ch] font-commissioner text-[14px] leading-relaxed text-[#8b8f6b]">
-                Our partners enable precision machining, high-capacity battery fabrication, GPU compute clusters,
-                and live terrain field trials.
+                Our partners enable precision machining, high-capacity battery
+                fabrication, GPU compute clusters, and live terrain field
+                trials.
               </p>
             </div>
             <Link
@@ -859,7 +1272,9 @@ export default function Home() {
                 className="grid h-24 place-items-center rounded border border-dashed border-white/[0.10] bg-white/[0.02] p-3 text-center font-mono text-[10px] tracking-wider text-[#8b8f6b] transition-colors hover:border-white/[0.25] hover:bg-white/[0.05]"
               >
                 <div>
-                  <div className="text-[11px] font-bold text-[#c2b8a3]/70">SLOT {String(i + 1).padStart(2, "0")}</div>
+                  <div className="text-[11px] font-bold text-[#c2b8a3]/70">
+                    SLOT {String(i + 1).padStart(2, "0")}
+                  </div>
                   <div className="text-[9px] text-[#5e6149] mt-1.5">{slot}</div>
                 </div>
               </div>
